@@ -3,7 +3,7 @@
     <groupId>org.twdata.maven</groupId>
     <artifactId>mojo-executor</artifactId>
     <packaging>jar</packaging>
-    <version>0.2-SNAPSHOT</version>
+    <version>0.2</version>
     <name>Mojo Executor</name>
     <dependencies>
         <dependency>
@@ -82,8 +82,8 @@
     </distributionManagement>
 
     <scm>
-        <connection>scm:svn:https://twdata-m2-repository.googlecode.com/svn/trunk</connection>
-        <developerConnection>scm:svn:https://twdata-m2-repository.googlecode.com/svn/trunk</developerConnection>
+        <connection>scm:svn:https://twdata-m2-repository.googlecode.com/svn/tags/mojo-executor-0.2</connection>
+        <developerConnection>scm:svn:https://twdata-m2-repository.googlecode.com/svn/tags/mojo-executor-0.2</developerConnection>
     </scm>
 
 </project>
