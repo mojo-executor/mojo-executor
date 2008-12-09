@@ -58,10 +58,19 @@ public class MojoExecutor {
 
             List buildPlugins = env.getMavenProject().getBuildPlugins();
 
+            String executionId = null;
+            if (goal != null && goal.length() > 0 && goal.indexOf('#') > -1)
+            {
+                int pos = goal.indexOf('#');
+                executionId = goal.substring(pos + 1);
+                goal = goal.substring(0, pos);
+                System.out.println("Executing goal "+goal+" with execution ID "+executionId);
+            }
+
             // You'd think we could just add the configuration to the mojo execution, but then it merges with the plugin config
             // dominate over the mojo config, so we are forced to fake the config as if it was declared as an execution in
             // the pom so that the merge happens correctly
-            if ( buildPlugins != null )
+            if (buildPlugins != null && executionId == null)
             {
                 for ( Iterator iterator = buildPlugins.iterator(); iterator.hasNext(); )
                 {
@@ -73,6 +82,7 @@ public class MojoExecutor {
                         exec.setConfiguration(configuration);
                         executionMap = pomPlugin.getExecutionsAsMap();
                         executionMap.put(FAKE_EXECUTION_ID, exec);
+                        executionId = FAKE_EXECUTION_ID;
                         break;
                     }
                 }
@@ -80,8 +90,8 @@ public class MojoExecutor {
 
             PluginDescriptor pluginDescriptor = env.getPluginManager().verifyPlugin(plugin, env.getMavenProject(), session.getSettings(), session.getLocalRepository());
             MojoExecution exec = null;
-            if (executionMap != null) {
-                exec = new MojoExecution(pluginDescriptor.getMojo(goal), FAKE_EXECUTION_ID);
+            if (executionId != null) {
+                exec = new MojoExecution(pluginDescriptor.getMojo(goal), executionId);
             } else {
                 exec = new MojoExecution(pluginDescriptor.getMojo(goal), configuration);
             }

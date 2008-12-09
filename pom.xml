@@ -82,8 +82,8 @@
     </distributionManagement>
 
     <scm>
-        <connection>scm:svn:https://mojo-executor.googlecode.com/svn/trunk</connection>
-        <developerConnection>scm:svn:https://mojo-executor.googlecode.com/svn/trunk</developerConnection>
+        <connection>scm:svn:https://twdata-m2-repository.googlecode.com/svn</connection>
+        <developerConnection>scm:svn:https://twdata-m2-repository.googlecode.com/svn</developerConnection>
     </scm>
 
 </project>
