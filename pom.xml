@@ -77,13 +77,13 @@
         <repository>
             <uniqueVersion>false</uniqueVersion>
             <id>googlecode</id>
-            <url>svn:https://mojo-executor.googlecode.com/svn/repo</url>
+            <url>svn:https://twdata-m2-repository.googlecode.com/svn/repo</url>
         </repository>
     </distributionManagement>
 
     <scm>
-        <connection>scm:svn:https://twdata-m2-repository.googlecode.com/svn/trunk</connection>
-        <developerConnection>scm:svn:https://twdata-m2-repository.googlecode.com/svn/trunk</developerConnection>
+        <connection>scm:svn:https://mojo-executor.googlecode.com/svn/trunk</connection>
+        <developerConnection>scm:svn:https://mojo-executor.googlecode.com/svn/trunk</developerConnection>
     </scm>
 
 </project>
