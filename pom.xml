@@ -77,7 +77,7 @@
         <repository>
             <uniqueVersion>false</uniqueVersion>
             <id>googlecode</id>
-            <url>svn:https://twdata-m2-repository.googlecode.com/svn/repo</url>
+            <url>svn:https://twdata-m2-repository.googlecode.com/svn</url>
         </repository>
     </distributionManagement>
 
