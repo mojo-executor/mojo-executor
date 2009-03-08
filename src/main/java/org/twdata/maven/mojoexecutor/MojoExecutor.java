@@ -7,6 +7,7 @@ import org.apache.maven.plugin.MojoExecution;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.PluginManager;
 import org.apache.maven.plugin.descriptor.PluginDescriptor;
+import org.apache.maven.plugin.descriptor.MojoDescriptor;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 
@@ -90,10 +91,15 @@ public class MojoExecutor {
 
             PluginDescriptor pluginDescriptor = env.getPluginManager().verifyPlugin(plugin, env.getMavenProject(), session.getSettings(), session.getLocalRepository());
             MojoExecution exec = null;
+            MojoDescriptor mojoDescriptor = pluginDescriptor.getMojo(goal);
+            if (mojoDescriptor == null)
+            {
+                throw new MojoExecutionException("Unknown mojo goal: "+goal);
+            }
             if (executionId != null) {
-                exec = new MojoExecution(pluginDescriptor.getMojo(goal), executionId);
+                exec = new MojoExecution(mojoDescriptor, executionId);
             } else {
-                exec = new MojoExecution(pluginDescriptor.getMojo(goal), configuration);
+                exec = new MojoExecution(mojoDescriptor, configuration);
             }
             env.getPluginManager().executeMojo(env.getMavenProject(), exec, env.getMavenSession());
         } catch (Exception e) {
