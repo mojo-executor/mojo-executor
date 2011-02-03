@@ -10,8 +10,9 @@
     <name>Mojo Executor</name>
 
     <scm>
-        <connection>scm:svn:https://mojo-executor.googlecode.com/svn/trunk</connection>
-        <developerConnection>scm:svn:https://mojo-executor.googlecode.com/svn/trunk</developerConnection>
+        <connection>scm:git:git://github.com/TimMoore/mojo-executor.git</connection>
+        <developerConnection>scm:git:https://TimMoore@github.com/TimMoore/mojo-executor.git</developerConnection>
+        <url>https://github.com/TimMoore/mojo-executor</url>
     </scm>
 
     <distributionManagement>
