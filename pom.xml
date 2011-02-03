@@ -24,6 +24,7 @@
     </distributionManagement>
 
     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.version>2.0.9</maven.version>
     </properties>
 
