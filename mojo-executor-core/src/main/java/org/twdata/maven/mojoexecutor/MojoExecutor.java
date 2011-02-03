@@ -6,19 +6,18 @@ import org.apache.maven.model.PluginExecution;
 import org.apache.maven.plugin.MojoExecution;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.PluginManager;
-import org.apache.maven.plugin.descriptor.PluginDescriptor;
 import org.apache.maven.plugin.descriptor.MojoDescriptor;
+import org.apache.maven.plugin.descriptor.PluginDescriptor;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 /**
  * Executes an arbitrary mojo using a fluent interface.  This is meant to be executed within the context of a Maven 2
  * mojo.
- *
+ * <p/>
  * Here is an execution that invokes the dependency plugin:
  * <pre>
  * executeMojo(
@@ -45,14 +44,15 @@ public class MojoExecutor {
     /**
      * Entry point for executing a mojo
      *
-     * @param plugin The plugin to execute
-     * @param goal The goal to execute
+     * @param plugin        The plugin to execute
+     * @param goal          The goal to execute
      * @param configuration The execution configuration
-     * @param env The execution environment
+     * @param env           The execution environment
      * @throws MojoExecutionException If there are any exceptions locating or executing the mojo
      */
-    public static void executeMojo(Plugin plugin, String goal, Xpp3Dom configuration, ExecutionEnvironment env) throws MojoExecutionException {
-        Map executionMap = null;
+    public static void executeMojo(Plugin plugin, String goal, Xpp3Dom configuration, ExecutionEnvironment env)
+            throws MojoExecutionException {
+        Map<String, PluginExecution> executionMap = null;
         try {
             MavenSession session = env.getMavenSession();
 
@@ -60,28 +60,25 @@ public class MojoExecutor {
             List buildPlugins = env.getMavenProject().getBuildPlugins();
 
             String executionId = null;
-            if (goal != null && goal.length() > 0 && goal.indexOf('#') > -1)
-            {
+            if (goal != null && goal.length() > 0 && goal.indexOf('#') > -1) {
                 int pos = goal.indexOf('#');
                 executionId = goal.substring(pos + 1);
                 goal = goal.substring(0, pos);
-                System.out.println("Executing goal "+goal+" with execution ID "+executionId);
+                System.out.println("Executing goal " + goal + " with execution ID " + executionId);
             }
 
-            // You'd think we could just add the configuration to the mojo execution, but then it merges with the plugin config
-            // dominate over the mojo config, so we are forced to fake the config as if it was declared as an execution in
-            // the pom so that the merge happens correctly
-            if (buildPlugins != null && executionId == null)
-            {
-                for ( Iterator iterator = buildPlugins.iterator(); iterator.hasNext(); )
-                {
-                    Plugin pomPlugin = (Plugin) iterator.next();
+            // You'd think we could just add the configuration to the mojo execution, but then it merges with the plugin
+            // config dominate over the mojo config, so we are forced to fake the config as if it was declared as an
+            // execution in the pom so that the merge happens correctly
+            if (buildPlugins != null && executionId == null) {
+                for (Object buildPlugin : buildPlugins) {
+                    Plugin pomPlugin = (Plugin) buildPlugin;
 
-                    if ( plugin.getGroupId().equals( pomPlugin.getGroupId() ) && plugin.getArtifactId().equals( pomPlugin.getArtifactId() ) )
-                    {
+                    if (plugin.getGroupId().equals(pomPlugin.getGroupId())
+                            && plugin.getArtifactId().equals(pomPlugin.getArtifactId())) {
                         PluginExecution exec = new PluginExecution();
                         exec.setConfiguration(configuration);
-                        executionMap = pomPlugin.getExecutionsAsMap();
+                        executionMap = getExecutionsAsMap(pomPlugin);
                         executionMap.put(FAKE_EXECUTION_ID, exec);
                         executionId = FAKE_EXECUTION_ID;
                         break;
@@ -89,41 +86,52 @@ public class MojoExecutor {
                 }
             }
 
-            PluginDescriptor pluginDescriptor = env.getPluginManager().verifyPlugin(plugin, env.getMavenProject(), session.getSettings(), session.getLocalRepository());
-            MojoExecution exec = null;
+            PluginDescriptor pluginDescriptor = env.getPluginManager().verifyPlugin(plugin, env.getMavenProject(),
+                    session.getSettings(), session.getLocalRepository());
             MojoDescriptor mojoDescriptor = pluginDescriptor.getMojo(goal);
-            if (mojoDescriptor == null)
-            {
-                throw new MojoExecutionException("Unknown mojo goal: "+goal);
+            if (mojoDescriptor == null) {
+                throw new MojoExecutionException("Unknown mojo goal: " + goal);
             }
-            if (executionId != null) {
-                exec = new MojoExecution(mojoDescriptor, executionId);
-            } else {
-                exec = new MojoExecution(mojoDescriptor, configuration);
-            }
+            MojoExecution exec = mojoExecution(mojoDescriptor, executionId, configuration);
             env.getPluginManager().executeMojo(env.getMavenProject(), exec, env.getMavenSession());
         } catch (Exception e) {
             throw new MojoExecutionException("Unable to execute mojo", e);
-        }
-        finally {
+        } finally {
             if (executionMap != null)
                 executionMap.remove(FAKE_EXECUTION_ID);
         }
     }
 
+    @SuppressWarnings({"unchecked"}) // Maven 2 API isn't generic
+    private static Map<String, PluginExecution> getExecutionsAsMap(Plugin pomPlugin) {
+        return (Map<String, PluginExecution>) pomPlugin.getExecutionsAsMap();
+    }
+
+    private static MojoExecution mojoExecution(MojoDescriptor mojoDescriptor, String executionId,
+                                               Xpp3Dom configuration) {
+        if (executionId != null) {
+            return new MojoExecution(mojoDescriptor, executionId);
+        } else {
+            return new MojoExecution(mojoDescriptor, configuration);
+        }
+    }
+
     /**
      * Constructs the {@link ExecutionEnvironment} instance fluently
-     * @param mavenProject The current Maven project
-     * @param mavenSession The current Maven session
+     *
+     * @param mavenProject  The current Maven project
+     * @param mavenSession  The current Maven session
      * @param pluginManager The Maven plugin manager
      * @return The execution environment
      */
-    public static ExecutionEnvironment executionEnvironment(MavenProject mavenProject, MavenSession mavenSession, PluginManager pluginManager) {
+    public static ExecutionEnvironment executionEnvironment(MavenProject mavenProject, MavenSession mavenSession,
+                                                            PluginManager pluginManager) {
         return new ExecutionEnvironment(mavenProject, mavenSession, pluginManager);
     }
 
     /**
      * Builds the configuration for the goal using Elements
+     *
      * @param elements A list of elements for the configuration section
      * @return The elements transformed into the Maven-native XML format
      */
@@ -137,7 +145,8 @@ public class MojoExecutor {
 
     /**
      * Defines the plugin without its version
-     * @param groupId The group id
+     *
+     * @param groupId    The group id
      * @param artifactId The artifact id
      * @return The plugin instance
      */
@@ -147,13 +156,14 @@ public class MojoExecutor {
 
     /**
      * Defines a plugin
-     * @param groupId The group id
+     *
+     * @param groupId    The group id
      * @param artifactId The artifact id
-     * @param version The plugin version
+     * @param version    The plugin version
      * @return The plugin instance
      */
     public static Plugin plugin(String groupId, String artifactId, String version) {
-        Plugin plugin =  new Plugin();
+        Plugin plugin = new Plugin();
         plugin.setArtifactId(artifactId);
         plugin.setGroupId(groupId);
         plugin.setVersion(version);
@@ -162,6 +172,7 @@ public class MojoExecutor {
 
     /**
      * Wraps the group id string in a more readable format
+     *
      * @param groupId The value
      * @return The value
      */
@@ -171,6 +182,7 @@ public class MojoExecutor {
 
     /**
      * Wraps the artifact id string in a more readable format
+     *
      * @param artifactId The value
      * @return The value
      */
@@ -180,6 +192,7 @@ public class MojoExecutor {
 
     /**
      * Wraps the version string in a more readable format
+     *
      * @param version The value
      * @return The value
      */
@@ -189,6 +202,7 @@ public class MojoExecutor {
 
     /**
      * Wraps the goal string in a more readable format
+     *
      * @param goal The value
      * @return The value
      */
@@ -198,6 +212,7 @@ public class MojoExecutor {
 
     /**
      * Wraps the element name string in a more readable format
+     *
      * @param name The value
      * @return The value
      */
@@ -207,7 +222,8 @@ public class MojoExecutor {
 
     /**
      * Constructs the element with a textual body
-     * @param name The element name
+     *
+     * @param name  The element name
      * @param value The element text value
      * @return The element object
      */
@@ -217,7 +233,8 @@ public class MojoExecutor {
 
     /**
      * Constructs the element containg child elements
-     * @param name The element name
+     *
+     * @param name     The element name
      * @param elements The child elements
      * @return The Element object
      */
