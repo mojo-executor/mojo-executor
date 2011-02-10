@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.twdata.maven</groupId>
+    <artifactId>mojo-executor-test-project</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <name>Mojo Executor - Test Project</name>
+    <description>
+        Used by the tests for the Mojo Executor Maven Plugin.
+    </description>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.twdata.maven</groupId>
+                <artifactId>mojo-executor-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>execute-mojo</goal>
+                        </goals>
+                        <configuration>
+                            <plugin>
+                                <groupId>org.apache.maven.plugins</groupId>
+                                <artifactId>maven-antrun-plugin</artifactId>
+                                <version>1.6</version>
+                            </plugin>
+                            <goal>run</goal>
+                            <configuration>
+                                <target>
+                                    <echo>Executed successfully.</echo>
+                                </target>
+                            </configuration>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>
