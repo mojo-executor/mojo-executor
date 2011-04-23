@@ -232,7 +232,7 @@ public class MojoExecutor {
     }
 
     /**
-     * Constructs the element containg child elements
+     * Constructs the element containing child elements
      *
      * @param name     The element name
      * @param elements The child elements
