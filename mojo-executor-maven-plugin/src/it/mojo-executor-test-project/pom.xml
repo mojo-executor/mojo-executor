@@ -18,6 +18,7 @@
             <plugin>
                 <groupId>org.twdata.maven</groupId>
                 <artifactId>mojo-executor-maven-plugin</artifactId>
+                <version>@project.version@</version>
                 <executions>
                     <execution>
                         <phase>test</phase>

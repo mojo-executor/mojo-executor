@@ -127,6 +127,10 @@
                         <target>1.5</target>
                     </configuration>
                 </plugin>
+                <plugin>
+                    <artifactId>maven-invoker-plugin</artifactId>
+                    <version>1.5</version>
+                </plugin>
             </plugins>
         </pluginManagement>
         <plugins>
