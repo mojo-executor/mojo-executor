@@ -34,7 +34,7 @@
                             <goal>run</goal>
                             <configuration>
                                 <target>
-                                    <echo>Executed successfully.</echo>
+                                    <echo>Mojo Executor ran successfully.</echo>
                                 </target>
                             </configuration>
                         </configuration>
