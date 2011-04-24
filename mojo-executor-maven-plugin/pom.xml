@@ -6,14 +6,14 @@
 
     <parent>
         <groupId>org.twdata.maven</groupId>
-        <artifactId>mojo-executor</artifactId>
+        <artifactId>mojo-executor-parent</artifactId>
         <version>0.3-SNAPSHOT</version>
     </parent>
 
     <artifactId>mojo-executor-maven-plugin</artifactId>
     <packaging>maven-plugin</packaging>
 
-    <name>Mojo Executor - Maven Plugin</name>
+    <name>Mojo Executor Maven Plugin</name>
     <description>
         A very simple example of how to use the Mojo Executor in a Maven plugin. This plugin allows you to specify the
         group ID, artifact ID, version, goal, and configuration of a plugin to execute. Why would you use this plugin
@@ -32,7 +32,7 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>mojo-executor-core</artifactId>
+            <artifactId>mojo-executor</artifactId>
         </dependency>
 
         <dependency>

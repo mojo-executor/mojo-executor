@@ -6,14 +6,14 @@
 
     <parent>
         <groupId>org.twdata.maven</groupId>
-        <artifactId>mojo-executor</artifactId>
+        <artifactId>mojo-executor-parent</artifactId>
         <version>0.3-SNAPSHOT</version>
     </parent>
 
-    <artifactId>mojo-executor-core</artifactId>
+    <artifactId>mojo-executor</artifactId>
 
-    <name>Mojo Executor - Core</name>
-    <description>Core Mojo Executor library.</description>
+    <name>Mojo Executor</name>
+    <description>Mojo Executor library.</description>
 
     <dependencies>
         <dependency>

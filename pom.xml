@@ -5,14 +5,14 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.twdata.maven</groupId>
-    <artifactId>mojo-executor</artifactId>
+    <artifactId>mojo-executor-parent</artifactId>
     <version>0.3-SNAPSHOT</version>
     <packaging>pom</packaging>
 
-    <name>Mojo Executor - Parent</name>
+    <name>Mojo Executor Parent</name>
 
     <modules>
-        <module>mojo-executor-core</module>
+        <module>mojo-executor</module>
         <module>mojo-executor-maven-plugin</module>
     </modules>
 
@@ -85,7 +85,7 @@
             </dependency>
             <dependency>
                 <groupId>${project.groupId}</groupId>
-                <artifactId>mojo-executor-core</artifactId>
+                <artifactId>mojo-executor</artifactId>
                 <version>${project.version}</version>
             </dependency>
 
