@@ -13,7 +13,6 @@
     <artifactId>mojo-executor</artifactId>
 
     <name>Mojo Executor</name>
-    <description>Mojo Executor library.</description>
 
     <dependencies>
         <dependency>

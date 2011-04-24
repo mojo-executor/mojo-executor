@@ -10,6 +10,47 @@
     <packaging>pom</packaging>
 
     <name>Mojo Executor Parent</name>
+    <description>
+        The Mojo Executor provides a way to to execute other Mojos (plugins) within a Maven plugin, allowing you to
+        easily create Maven plugins that are composed of other plugins.
+    </description>
+    <url>http://timmoore.github.com/mojo-executor/</url>
+    <inceptionYear>2008</inceptionYear>
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <id>mrdon</id>
+            <name>Don Brown</name>
+            <email>mrdon@twdata.org</email>
+            <roles>
+                <role>Original Author</role>
+            </roles>
+        </developer>
+        <developer>
+            <id>TimMoore</id>
+            <name>Tim Moore</name>
+            <email>tmoore@incrementalism.net</email>
+            <roles>
+                <role>Current Maintainer</role>
+            </roles>
+        </developer>
+    </developers>
+    <contributors>
+        <contributor>
+            <name>Matthew McCullough</name>
+            <email>matthewm@ambientideas.com</email>
+        </contributor>
+        <contributor>
+            <name>Gili Tzabari</name>
+        </contributor>
+    </contributors>
 
     <modules>
         <module>mojo-executor</module>
@@ -21,6 +62,10 @@
         <developerConnection>scm:git:ssh://git@github.com/TimMoore/mojo-executor.git</developerConnection>
         <url>https://github.com/TimMoore/mojo-executor</url>
     </scm>
+    <issueManagement>
+        <system>GitHub</system>
+        <url>https://github.com/TimMoore/mojo-executor/issues</url>
+    </issueManagement>
 
     <distributionManagement>
         <repository>
