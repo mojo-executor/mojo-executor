@@ -19,7 +19,7 @@
 
     <groupId>org.twdata.maven</groupId>
     <artifactId>mojo-executor-parent</artifactId>
-    <version>1.0</version>
+    <version>1.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>Mojo Executor Parent</name>
