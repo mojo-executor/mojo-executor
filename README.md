@@ -5,7 +5,7 @@ Downloads
 
 You can download the jars, source, and javadocs from the Maven 2 repository:
 
-http://mojo-executor.googlecode.com/svn/repo/org/twdata/maven/mojo-executor/
+http://twdata-m2-repository.googlecode.com/svn/org/twdata/maven/mojo-executor/
 
 Example Usage
 =============
