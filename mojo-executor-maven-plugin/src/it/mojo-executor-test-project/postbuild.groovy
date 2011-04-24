@@ -13,5 +13,5 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-File buildLog = new File(basedir, "build.log")
+File buildLog = new File((String) basedir, "build.log")
 return buildLog.readLines().contains("     [echo] Mojo Executor ran successfully.");
