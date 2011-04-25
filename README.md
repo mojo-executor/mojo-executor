@@ -105,7 +105,7 @@ It is currently maintained by [Tim Moore][TimMoore] (tmoore@incrementalism.net).
 Thanks to the following contributors, who have provided patches and other assistance:
 
 -   [Matthew McCullough][matthewmccullough]
--   Gili Tzabari
+-   Gili Tzabari (cowwoc@bbs.darktech.org) &mdash; Maven 3 support
 
 [mrdon]: https://github.com/mrdon
 [TimMoore]: https://github.com/TimMoore/
