@@ -18,13 +18,14 @@ package org.twdata.maven.mojoexecutor.plugin;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.model.Plugin;
 import org.apache.maven.plugin.AbstractMojo;
+import org.apache.maven.plugin.BuildPluginManager;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.PluginManager;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration;
 
 import static org.twdata.maven.mojoexecutor.MojoExecutor.executeMojo;
 import static org.twdata.maven.mojoexecutor.MojoExecutor.executionEnvironment;
+import static org.twdata.maven.mojoexecutor.PlexusConfigurationUtils.toXpp3Dom;
 
 /**
  * Execute a Mojo using the MojoExecutor.
@@ -74,15 +75,15 @@ public class MojoExecutorMojo extends AbstractMojo {
     private MavenSession mavenSession;
 
     /**
-     * The Maven PluginManager component.
+     * The Maven BuildPluginManager component.
      *
      * @component
      * @required
      */
-    private PluginManager pluginManager;
+    private BuildPluginManager pluginManager;
 
     public void execute() throws MojoExecutionException {
-        executeMojo(plugin, goal, configuration.getXpp3Dom(),
+        executeMojo(plugin, goal, toXpp3Dom(configuration),
                 executionEnvironment(mavenProject, mavenSession, pluginManager));
     }
 }

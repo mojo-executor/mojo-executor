@@ -16,11 +16,13 @@
 package org.twdata.maven.mojoexecutor;
 
 import org.apache.maven.execution.MavenSession;
+import org.apache.maven.model.Plugin;
+import org.apache.maven.plugin.BuildPluginManager;
 import org.apache.maven.plugin.MojoExecution;
-import org.apache.maven.plugin.PluginManager;
 import org.apache.maven.plugin.descriptor.MojoDescriptor;
 import org.apache.maven.plugin.descriptor.PluginDescriptor;
 import org.apache.maven.project.MavenProject;
+import org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.hamcrest.CoreMatchers;
 import org.hamcrest.Description;
@@ -31,38 +33,61 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.sonatype.aether.RepositorySystemSession;
+import org.sonatype.aether.repository.RemoteRepository;
 
 import java.util.List;
+import java.util.Map;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.sameInstance;
+import static org.mockito.Matchers.anyListOf;
 import static org.mockito.Matchers.argThat;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Matchers.same;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.twdata.maven.mojoexecutor.MojoExecutor.*;
+import static org.twdata.maven.mojoexecutor.MojoExecutor.artifactId;
+import static org.twdata.maven.mojoexecutor.MojoExecutor.configuration;
+import static org.twdata.maven.mojoexecutor.MojoExecutor.element;
+import static org.twdata.maven.mojoexecutor.MojoExecutor.executeMojo;
+import static org.twdata.maven.mojoexecutor.MojoExecutor.executionEnvironment;
+import static org.twdata.maven.mojoexecutor.MojoExecutor.goal;
+import static org.twdata.maven.mojoexecutor.MojoExecutor.groupId;
+import static org.twdata.maven.mojoexecutor.MojoExecutor.name;
+import static org.twdata.maven.mojoexecutor.MojoExecutor.plugin;
+import static org.twdata.maven.mojoexecutor.MojoExecutor.version;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MojoExecutorTest {
     @Mock MavenProject project;
     @Mock MavenSession session;
-    @Mock PluginManager pluginManager;
-    @Mock PluginDescriptor mavenDependencyPluginDescriptor;
-    @Mock MojoDescriptor copyDependenciesMojoDescriptor;
+    @Mock RepositorySystemSession repositorySession;
+    @Mock BuildPluginManager pluginManager;
+
+    private MojoDescriptor copyDependenciesMojoDescriptor;
 
     @Before
     public void setUpMocks() throws Exception {
-        when(pluginManager.verifyPlugin(
-                plugin(
+        PluginDescriptor mavenDependencyPluginDescriptor = new PluginDescriptor();
+
+        copyDependenciesMojoDescriptor = new MojoDescriptor();
+        copyDependenciesMojoDescriptor.setGoal("copy-dependencies");
+        copyDependenciesMojoDescriptor.setConfiguration(new XmlPlexusConfiguration("configuration"));
+        copyDependenciesMojoDescriptor.setPluginDescriptor(mavenDependencyPluginDescriptor);
+
+        mavenDependencyPluginDescriptor.addMojo(copyDependenciesMojoDescriptor);
+
+        when(session.getRepositorySession()).thenReturn(repositorySession);
+        when(pluginManager.loadPlugin(
+                eq(plugin(
                         groupId("org.apache.maven.plugins"),
                         artifactId("maven-dependency-plugin"),
                         version("2.0")
-                ),
-                project,
-                session.getSettings(),
-                session.getLocalRepository()
+                )),
+                anyListOf(RemoteRepository.class),
+                same(repositorySession)
         )).thenReturn(mavenDependencyPluginDescriptor);
-        when(mavenDependencyPluginDescriptor.getMojo(goal("copy-dependencies")))
-                .thenReturn(copyDependenciesMojoDescriptor);
     }
 
     @Test
@@ -86,14 +111,13 @@ public class MojoExecutorTest {
         );
         verify(pluginManager)
                 .executeMojo(
-                        same(project),
+                        same(session),
                         argThat(is(equalTo(new MojoExecution(
                                 copyDependenciesMojoDescriptor,
                                 configuration(
                                         element(name("outputDirectory"), "${project.build.directory}/foo")
                                 )
-                        )))),
-                        same(session)
+                        ))))
                 );
     }
 
@@ -118,9 +142,8 @@ public class MojoExecutorTest {
         );
         verify(pluginManager)
                 .executeMojo(
-                        same(project),
-                        argThat(is(equalTo(new MojoExecution(copyDependenciesMojoDescriptor, "execution")))),
-                        same(session)
+                        same(session),
+                        argThat(is(equalTo(new MojoExecution(copyDependenciesMojoDescriptor, "execution"))))
                 );
     }
 
@@ -134,31 +157,41 @@ public class MojoExecutorTest {
     }
 
     private static class MojoExecutionIsEqual extends TypeSafeDiagnosingMatcher<MojoExecution> {
+        private final Matcher<? super Plugin> plugin;
+        private final Matcher<? super String> goal;
         private final Matcher<? super String> executionId;
         private final Matcher<? super MojoDescriptor> mojoDescriptor;
         private final Matcher<? super Xpp3Dom> configuration;
-        private final Matcher<? super List> forkedExecutions;
-        private final Matcher<? super List> reports;
+        private final Matcher<? super MojoExecution.Source> source;
+        private final Matcher<? super String> lifecyclePhase;
+        private final Matcher<? super Map<String, List<MojoExecution>>> forkedExecutions;
 
         MojoExecutionIsEqual(MojoExecution mojoExecution) {
+            plugin = is(equalTo(mojoExecution.getPlugin()));
+            goal = is(equalTo(mojoExecution.getGoal()));
             executionId = is(equalTo(mojoExecution.getExecutionId()));
             mojoDescriptor = is(equalTo(mojoExecution.getMojoDescriptor()));
             configuration = is(equalTo(mojoExecution.getConfiguration()));
+            source = is(sameInstance(mojoExecution.getSource()));
+            lifecyclePhase = is(equalTo(mojoExecution.getLifecyclePhase()));
             forkedExecutions = is(equalTo(mojoExecution.getForkedExecutions()));
-            reports = is(equalTo(mojoExecution.getReports()));
         }
 
         @Override
         protected boolean matchesSafely(MojoExecution mojoExecution, Description mismatchDescription) {
-            boolean matches = tryMatch("executionId", executionId, mojoExecution.getExecutionId(), mismatchDescription,
-                    true);
+            boolean matches = true;
+            matches = tryMatch("plugin", plugin, mojoExecution.getPlugin(), mismatchDescription, matches);
+            matches = tryMatch("goal", goal, mojoExecution.getGoal(), mismatchDescription, matches);
+            matches = tryMatch("executionId", executionId, mojoExecution.getExecutionId(), mismatchDescription, matches);
             matches = tryMatch("mojoDescriptor", mojoDescriptor, mojoExecution.getMojoDescriptor(), mismatchDescription,
                     matches);
             matches = tryMatch("configuration", configuration, mojoExecution.getConfiguration(), mismatchDescription,
                     matches);
+            matches = tryMatch("source", source, mojoExecution.getSource(), mismatchDescription, matches);
+            matches = tryMatch("lifecyclePhase", lifecyclePhase, mojoExecution.getLifecyclePhase(), mismatchDescription,
+                    matches);
             matches = tryMatch("forkedExecutions", forkedExecutions, mojoExecution.getForkedExecutions(),
                     mismatchDescription, matches);
-            matches = tryMatch("reports", reports, mojoExecution.getReports(), mismatchDescription, matches);
             return matches;
         }
 
@@ -179,16 +212,22 @@ public class MojoExecutorTest {
         }
 
         public void describeTo(Description description) {
-            description.appendText("MojoExecution with executionId ")
+            description.appendText("MojoExecution with plugin ")
+                    .appendDescriptionOf(plugin)
+                    .appendText(", goal ")
+                    .appendDescriptionOf(goal)
+                    .appendText(", executionId ")
                     .appendDescriptionOf(executionId)
                     .appendText(", mojoDescriptor ")
                     .appendDescriptionOf(mojoDescriptor)
                     .appendText(", configuration ")
                     .appendDescriptionOf(configuration)
+                    .appendText(", source ")
+                    .appendDescriptionOf(source)
+                    .appendText(", lifecyclePhase")
+                    .appendDescriptionOf(lifecyclePhase)
                     .appendText(", forkedExecutions ")
-                    .appendDescriptionOf(forkedExecutions)
-                    .appendText(", reports ")
-                    .appendDescriptionOf(reports);
+                    .appendDescriptionOf(forkedExecutions);
         }
     }
 }

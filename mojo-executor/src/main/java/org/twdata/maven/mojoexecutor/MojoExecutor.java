@@ -17,17 +17,16 @@ package org.twdata.maven.mojoexecutor;
 
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.model.Plugin;
-import org.apache.maven.model.PluginExecution;
+import org.apache.maven.plugin.BuildPluginManager;
 import org.apache.maven.plugin.MojoExecution;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.PluginManager;
 import org.apache.maven.plugin.descriptor.MojoDescriptor;
 import org.apache.maven.plugin.descriptor.PluginDescriptor;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
+import org.codehaus.plexus.util.xml.Xpp3DomUtils;
 
-import java.util.List;
-import java.util.Map;
+import static org.twdata.maven.mojoexecutor.PlexusConfigurationUtils.toXpp3Dom;
 
 /**
  * Executes an arbitrary mojo using a fluent interface.  This is meant to be executed within the context of a Maven 2
@@ -54,8 +53,6 @@ import java.util.Map;
  * </pre>
  */
 public class MojoExecutor {
-    private static final String FAKE_EXECUTION_ID = "virtual-execution";
-
     /**
      * Entry point for executing a mojo
      *
@@ -67,59 +64,36 @@ public class MojoExecutor {
      */
     public static void executeMojo(Plugin plugin, String goal, Xpp3Dom configuration, ExecutionEnvironment env)
             throws MojoExecutionException {
-        Map<String, PluginExecution> executionMap = null;
+        if (configuration == null) {
+            throw new NullPointerException("configuration may not be null");
+        }
         try {
-            MavenSession session = env.getMavenSession();
-
-
-            List buildPlugins = env.getMavenProject().getBuildPlugins();
-
             String executionId = null;
             if (goal != null && goal.length() > 0 && goal.indexOf('#') > -1) {
                 int pos = goal.indexOf('#');
                 executionId = goal.substring(pos + 1);
                 goal = goal.substring(0, pos);
-                System.out.println("Executing goal " + goal + " with execution ID " + executionId);
             }
 
-            // You'd think we could just add the configuration to the mojo execution, but then it merges with the plugin
-            // config dominate over the mojo config, so we are forced to fake the config as if it was declared as an
-            // execution in the pom so that the merge happens correctly
-            if (buildPlugins != null && executionId == null) {
-                for (Object buildPlugin : buildPlugins) {
-                    Plugin pomPlugin = (Plugin) buildPlugin;
+            MavenSession session = env.getMavenSession();
 
-                    if (plugin.getGroupId().equals(pomPlugin.getGroupId())
-                            && plugin.getArtifactId().equals(pomPlugin.getArtifactId())) {
-                        PluginExecution exec = new PluginExecution();
-                        exec.setConfiguration(configuration);
-                        executionMap = getExecutionsAsMap(pomPlugin);
-                        executionMap.put(FAKE_EXECUTION_ID, exec);
-                        executionId = FAKE_EXECUTION_ID;
-                        break;
-                    }
-                }
-            }
-
-            PluginDescriptor pluginDescriptor = env.getPluginManager().verifyPlugin(plugin, env.getMavenProject(),
-                    session.getSettings(), session.getLocalRepository());
+            PluginDescriptor pluginDescriptor =
+                    env.getPluginManager().loadPlugin(
+                            plugin,
+                            env.getMavenProject().getRemotePluginRepositories(),
+                            session.getRepositorySession());
             MojoDescriptor mojoDescriptor = pluginDescriptor.getMojo(goal);
             if (mojoDescriptor == null) {
-                throw new MojoExecutionException("Unknown mojo goal: " + goal);
+                throw new MojoExecutionException("Could not find goal '" + goal + "' in plugin "
+                        + plugin.getGroupId() + ":"
+                        + plugin.getArtifactId() + ":"
+                        + plugin.getVersion());
             }
             MojoExecution exec = mojoExecution(mojoDescriptor, executionId, configuration);
-            env.getPluginManager().executeMojo(env.getMavenProject(), exec, env.getMavenSession());
+            env.getPluginManager().executeMojo(session, exec);
         } catch (Exception e) {
             throw new MojoExecutionException("Unable to execute mojo", e);
-        } finally {
-            if (executionMap != null)
-                executionMap.remove(FAKE_EXECUTION_ID);
         }
-    }
-
-    @SuppressWarnings({"unchecked"}) // Maven 2 API isn't generic
-    private static Map<String, PluginExecution> getExecutionsAsMap(Plugin pomPlugin) {
-        return (Map<String, PluginExecution>) pomPlugin.getExecutionsAsMap();
     }
 
     private static MojoExecution mojoExecution(MojoDescriptor mojoDescriptor, String executionId,
@@ -127,6 +101,7 @@ public class MojoExecutor {
         if (executionId != null) {
             return new MojoExecution(mojoDescriptor, executionId);
         } else {
+            configuration = Xpp3DomUtils.mergeXpp3Dom(configuration, toXpp3Dom(mojoDescriptor.getMojoConfiguration()));
             return new MojoExecution(mojoDescriptor, configuration);
         }
     }
@@ -136,11 +111,14 @@ public class MojoExecutor {
      *
      * @param mavenProject  The current Maven project
      * @param mavenSession  The current Maven session
-     * @param pluginManager The Maven plugin manager
+     * @param pluginManager The Build plugin manager
      * @return The execution environment
+     * @throws NullPointerException if mavenProject, mavenSession or pluginManager
+     *                              are null
      */
-    public static ExecutionEnvironment executionEnvironment(MavenProject mavenProject, MavenSession mavenSession,
-                                                            PluginManager pluginManager) {
+    public static ExecutionEnvironment executionEnvironment(MavenProject mavenProject,
+                                                            MavenSession mavenSession,
+                                                            BuildPluginManager pluginManager) {
         return new ExecutionEnvironment(mavenProject, mavenSession, pluginManager);
     }
 
@@ -293,9 +271,20 @@ public class MojoExecutor {
     public static class ExecutionEnvironment {
         private final MavenProject mavenProject;
         private final MavenSession mavenSession;
-        private final PluginManager pluginManager;
+        private final BuildPluginManager pluginManager;
 
-        public ExecutionEnvironment(MavenProject mavenProject, MavenSession mavenSession, PluginManager pluginManager) {
+        public ExecutionEnvironment(MavenProject mavenProject,
+                                    MavenSession mavenSession,
+                                    BuildPluginManager pluginManager) {
+            if (mavenProject == null) {
+                throw new NullPointerException("mavenProject may not be null");
+            }
+            if (mavenSession == null) {
+                throw new NullPointerException("mavenSession may not be null");
+            }
+            if (pluginManager == null) {
+                throw new NullPointerException("pluginManager may not be null");
+            }
             this.mavenProject = mavenProject;
             this.mavenSession = mavenSession;
             this.pluginManager = pluginManager;
@@ -309,7 +298,7 @@ public class MojoExecutor {
             return mavenSession;
         }
 
-        public PluginManager getPluginManager() {
+        public BuildPluginManager getPluginManager() {
             return pluginManager;
         }
     }
