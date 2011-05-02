@@ -86,14 +86,6 @@
         <url>https://github.com/TimMoore/mojo-executor/issues</url>
     </issueManagement>
 
-    <distributionManagement>
-        <repository>
-            <uniqueVersion>false</uniqueVersion>
-            <id>googlecode</id>
-            <url>svn:https://twdata-m2-repository.googlecode.com/svn</url>
-        </repository>
-    </distributionManagement>
-
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.version>2.0.9</maven.version>
