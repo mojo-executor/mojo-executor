@@ -17,6 +17,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <parent>
+        <groupId>org.sonatype.oss</groupId>
+        <artifactId>oss-parent</artifactId>
+        <version>7</version>
+    </parent>
+
     <groupId>org.twdata.maven</groupId>
     <artifactId>mojo-executor-parent</artifactId>
     <version>2.0-SNAPSHOT</version>
@@ -80,14 +86,6 @@
         <system>GitHub</system>
         <url>https://github.com/TimMoore/mojo-executor/issues</url>
     </issueManagement>
-
-    <distributionManagement>
-        <repository>
-            <uniqueVersion>false</uniqueVersion>
-            <id>googlecode</id>
-            <url>svn:https://twdata-m2-repository.googlecode.com/svn</url>
-        </repository>
-    </distributionManagement>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -200,6 +198,10 @@
                                     </excludes>
                                     <message>Use junit:junit-dep instead of junit.</message>
                                 </bannedDependencies>
+                                <requireMavenVersion>
+                                    <version>[3.0,4.0)</version>
+                                    <message>Version 2.x of Mojo Executor requires Maven 2. Use Mojo Executor 1.x with Maven 2.</message>
+                                </requireMavenVersion>
                             </rules>
                         </configuration>
                     </execution>
