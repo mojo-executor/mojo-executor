@@ -25,6 +25,7 @@ import org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration;
 
 import static org.twdata.maven.mojoexecutor.MojoExecutor.executeMojo;
 import static org.twdata.maven.mojoexecutor.MojoExecutor.executionEnvironment;
+import static org.twdata.maven.mojoexecutor.PlexusConfigurationUtils.toXpp3Dom;
 
 /**
  * Execute a Mojo using the MojoExecutor.
@@ -82,7 +83,7 @@ public class MojoExecutorMojo extends AbstractMojo {
     private PluginManager pluginManager;
 
     public void execute() throws MojoExecutionException {
-        executeMojo(plugin, goal, configuration.getXpp3Dom(),
+        executeMojo(plugin, goal, toXpp3Dom(configuration),
                 executionEnvironment(mavenProject, mavenSession, pluginManager));
     }
 }
