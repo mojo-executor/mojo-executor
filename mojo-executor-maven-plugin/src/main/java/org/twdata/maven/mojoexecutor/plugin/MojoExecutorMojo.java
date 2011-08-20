@@ -18,10 +18,13 @@ package org.twdata.maven.mojoexecutor.plugin;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.model.Plugin;
 import org.apache.maven.plugin.AbstractMojo;
+import org.apache.maven.plugin.BuildPluginManager;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.PluginManager;
 import org.apache.maven.project.MavenProject;
+import org.codehaus.plexus.component.repository.exception.ComponentLookupException;
 import org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration;
+import org.twdata.maven.mojoexecutor.MojoExecutor.ExecutionEnvironment;
 
 import static org.twdata.maven.mojoexecutor.MojoExecutor.executeMojo;
 import static org.twdata.maven.mojoexecutor.MojoExecutor.executionEnvironment;
@@ -83,7 +86,17 @@ public class MojoExecutorMojo extends AbstractMojo {
     private PluginManager pluginManager;
 
     public void execute() throws MojoExecutionException {
+        ExecutionEnvironment env;
+        
+        try {
+            Object o = mavenSession.lookup("org.apache.maven.plugin.BuildPluginManager");
+            
+            env = executionEnvironment(mavenProject, mavenSession, (BuildPluginManager) o);
+        } catch (ComponentLookupException e) {
+            env = executionEnvironment(mavenProject, mavenSession, pluginManager);
+        }
+        
         executeMojo(plugin, goal, toXpp3Dom(configuration),
-                executionEnvironment(mavenProject, mavenSession, pluginManager));
+                env);
     }
 }
