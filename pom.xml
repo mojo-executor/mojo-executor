@@ -25,7 +25,7 @@
 
     <groupId>org.twdata.maven</groupId>
     <artifactId>mojo-executor-parent</artifactId>
-    <version>1.5-SNAPSHOT</version>
+    <version>1.5</version>
     <packaging>pom</packaging>
 
     <name>Mojo Executor Parent</name>
