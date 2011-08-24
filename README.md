@@ -3,9 +3,9 @@ The Mojo Executor provides a way to to execute other Mojos (plugins) within a Ma
 Downloads
 =========
 
-You can download the jars, source, and javadocs from the Maven 2 repository:
+You can download the jars, source, and javadocs from Maven central:
 
-http://twdata-m2-repository.googlecode.com/svn/org/twdata/maven/mojo-executor/
+http://repo2.maven.org/maven2/org/twdata/maven/mojo-executor/
 
 Example Usage
 =============
@@ -61,20 +61,12 @@ protected MavenSession session;
 protected PluginManager pluginManager;
 ```
 
-Maven Repository
+Maven Dependency
 ================
 
 Add this to your pom.xml:
 
 ``` xml
-<repositories>
-    <repository>
-        <id>mojo-executor-repository</id>
-        <name>Mojo Executor Repository for Maven</name>
-        <url>http://twdata-m2-repository.googlecode.com/svn/</url>
-    </repository>
-</repositories>
-
 <dependencies>
     <dependency>
         <groupId>org.twdata.maven</groupId>
@@ -106,7 +98,9 @@ Thanks to the following contributors, who have provided patches and other assist
 
 -   [Matthew McCullough][matthewmccullough]
 -   Gili Tzabari (cowwoc@bbs.darktech.org) &mdash; Maven 3 support
+-   [Joseph Walton][josephw] &mdash; support for both Maven 2 and Maven 3 in the same artifact
 
 [mrdon]: https://github.com/mrdon
 [TimMoore]: https://github.com/TimMoore/
 [matthewmccullough]: https://github.com/matthewmccullough
+[josephw]: https://github.com/josephw
