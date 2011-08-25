@@ -105,22 +105,21 @@
     <p>Add this to your pom.xml:</p>
 
     <pre>
-    &lt;repositories&gt;
-        &lt;repository&gt;
-            &lt;id&gt;mojo-executor-repository&lt;/id&gt;
-            &lt;name&gt;Mojo Executor Repository for Maven&lt;/name&gt;
-            &lt;url&gt;http://twdata-m2-repository.googlecode.com/svn/&lt;/url&gt;
-        &lt;/repository&gt;
-    &lt;/repositories&gt;
-
     &lt;dependencies&gt;
         &lt;dependency&gt;
             &lt;groupId&gt;org.twdata.maven&lt;/groupId&gt;
             &lt;artifactId&gt;mojo-executor&lt;/artifactId&gt;
-            &lt;version&gt;1.0&lt;/version&gt;
+            &lt;version&gt;2.0&lt;/version&gt;
         &lt;/dependency&gt;
     &lt;/dependencies&gt;
     </pre>
+    
+    <p>There are a few versions available, and the best one to use will depend on the version(s) of Maven you need to support:</p>
+    <dl>
+      <dt>1.0.1</dt><dd>Supports Maven 2.x only</dd>
+      <dt>1.5</dt><dd>Supports both Maven 2.x and Maven 3.x</dd>
+      <dt>2.0</dt><dd>Supports Maven 3.x only</dd>
+    </dl>
 
     <h2>License</h2>
 
