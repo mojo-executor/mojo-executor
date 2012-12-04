@@ -17,6 +17,9 @@ package org.twdata.maven.mojoexecutor;
 
 import static org.twdata.maven.mojoexecutor.PlexusConfigurationUtils.toXpp3Dom;
 
+import java.util.List;
+import java.util.Map;
+
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.model.Plugin;
 import org.apache.maven.model.PluginExecution;
@@ -29,9 +32,6 @@ import org.apache.maven.plugin.descriptor.PluginDescriptor;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.codehaus.plexus.util.xml.Xpp3DomUtils;
-
-import java.util.List;
-import java.util.Map;
 
 /**
  * Executes an arbitrary mojo using a fluent interface.  This is meant to be executed within the context of a Maven 2
@@ -321,6 +321,10 @@ public class MojoExecutor {
         return new Element(name, value);
     }
 
+    public static Element element(String name, Attribute... attrs) {
+        return new Element(name, attrs);
+    }    
+    
     /**
      * Constructs the element containing child elements
      *
@@ -332,14 +336,36 @@ public class MojoExecutor {
         return new Element(name, elements);
     }
 
+    public static Attribute attribute(String name, String value) {
+    	return new Attribute(name, value);
+    }
+    
+    public static class Attribute {
+    	private final String name;
+    	private final String value;
+    	
+    	public Attribute(String name, String value) {
+    		this.name = name;
+    		this.value = value;
+		}
+    }
+    
     /**
      * Element wrapper class for configuration elements
      */
     public static class Element {
         private final Element[] children;
+        private final Attribute[] attributes;
         private final String name;
         private final String text;
 
+        public Element(String name, Attribute... attrs) {
+        	this.name = name;
+        	this.attributes = attrs;
+        	this.children = null;
+        	this.text = null;
+        }        
+        
         public Element(String name, Element... children) {
             this(name, null, children);
         }
@@ -348,6 +374,7 @@ public class MojoExecutor {
             this.name = name;
             this.text = text;
             this.children = children;
+            this.attributes = null;
         }
 
         public Xpp3Dom toDom() {
@@ -355,8 +382,15 @@ public class MojoExecutor {
             if (text != null) {
                 dom.setValue(text);
             }
-            for (Element e : children) {
-                dom.addChild(e.toDom());
+            if (attributes != null) {
+	            for (Attribute a : attributes) {
+	            	dom.setAttribute(a.name, a.value);
+	            }            
+            }
+            if (children != null) {
+	            for (Element e : children) {
+	                dom.addChild(e.toDom());
+	            }
             }
             return dom;
         }
