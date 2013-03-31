@@ -65,7 +65,7 @@ You might need to add other annotations to your Mojo class, depending on the nee
 
 For example, if you are using the `maven-dependency-plugin`, as in this example, you will need to add `@requiresDependencyResolution <scope>` to your class annotations to ensure that Maven resolves the project dependencies before invoking your plugin.
 
-See the [Mojo API Specification][mojo-api] for details on available annotations.
+See the [Mojo API Specification][mojo-api] for details on available annotations. Look at the included [example plugin](mojo-executor-maven-plugin/) for an example of use.
 
 Maven Dependency
 ================
