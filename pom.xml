@@ -204,7 +204,7 @@
                                 </bannedDependencies>
                                 <requireMavenVersion>
                                     <version>[3.0,4.0)</version>
-                                    <message>Version 2.x of Mojo Executor requires Maven 2. Use Mojo Executor 1.x with Maven 2.</message>
+                                    <message>Version 2.x of Mojo Executor requires Maven ${maven.version}. Use Mojo Executor 1.x with Maven 2.</message>
                                 </requireMavenVersion>
                             </rules>
                         </configuration>
