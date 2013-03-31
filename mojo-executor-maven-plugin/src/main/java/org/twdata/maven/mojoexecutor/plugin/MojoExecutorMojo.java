@@ -31,6 +31,7 @@ import static org.twdata.maven.mojoexecutor.PlexusConfigurationUtils.toXpp3Dom;
  * Execute a Mojo using the MojoExecutor.
  *
  * @goal execute-mojo
+ * @requiresDependencyResolution test
  */
 public class MojoExecutorMojo extends AbstractMojo {
     /**

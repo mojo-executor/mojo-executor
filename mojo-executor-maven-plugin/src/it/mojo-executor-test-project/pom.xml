@@ -28,6 +28,27 @@
         Used by the tests for the Mojo Executor Maven Plugin.
     </description>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.4</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-nop</artifactId>
+            <version>1.7.4</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit-dep</artifactId>
+            <version>4.11</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
     <build>
         <plugins>
             <plugin>
@@ -43,14 +64,11 @@
                         <configuration>
                             <plugin>
                                 <groupId>org.apache.maven.plugins</groupId>
-                                <artifactId>maven-antrun-plugin</artifactId>
-                                <version>1.6</version>
+                                <artifactId>maven-dependency-plugin</artifactId>
+                                <version>2.0</version>
                             </plugin>
-                            <goal>run</goal>
+                            <goal>list</goal>
                             <configuration>
-                                <target>
-                                    <echo>Mojo Executor ran successfully.</echo>
-                                </target>
                             </configuration>
                         </configuration>
                     </execution>

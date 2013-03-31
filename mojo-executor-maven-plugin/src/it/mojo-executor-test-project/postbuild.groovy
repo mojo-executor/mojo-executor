@@ -14,4 +14,10 @@
  * limitations under the License.
  */
 File buildLog = new File((String) basedir, "build.log")
-return buildLog.readLines().contains("     [echo] Mojo Executor ran successfully.");
+return buildLog.getText().contains("""
+[INFO] The following files have been resolved:
+[INFO]    junit:junit:jar:4.11:test
+[INFO]    org.hamcrest:hamcrest-core:jar:1.3:test
+[INFO]    org.slf4j:slf4j-api:jar:1.7.4:provided
+[INFO]    org.slf4j:slf4j-nop:jar:1.7.4:runtime
+""");
