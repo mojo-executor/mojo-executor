@@ -35,30 +35,30 @@ The project, session, and pluginManager variables should be injected via the nor
 
 ``` java
 /**
- * The Maven Project Object
+ * The project currently being build.
  *
  * @parameter expression="${project}"
  * @required
  * @readonly
  */
-protected MavenProject project;
+private MavenProject mavenProject;
 
 /**
- * The Maven Session Object
+ * The current Maven session.
  *
  * @parameter expression="${session}"
  * @required
  * @readonly
  */
-protected MavenSession session;
+private MavenSession mavenSession;
 
 /**
- * The Maven PluginManager Object
+ * The Maven BuildPluginManager component.
  *
  * @component
  * @required
  */
-protected PluginManager pluginManager;
+private BuildPluginManager pluginManager;
 ```
 
 Maven Dependency

@@ -59,8 +59,8 @@ public class MojoExecutorMojo extends AbstractMojo {
     /**
      * The project currently being build.
      *
-     * @parameter default-value="${project}"
-     * @parameter required
+     * @parameter expression="${project}"
+     * @required
      * @readonly
      */
     private MavenProject mavenProject;
@@ -68,8 +68,8 @@ public class MojoExecutorMojo extends AbstractMojo {
     /**
      * The current Maven session.
      *
-     * @parameter default-value="${session}"
-     * @parameter required
+     * @parameter expression="${session}"
+     * @required
      * @readonly
      */
     private MavenSession mavenSession;
