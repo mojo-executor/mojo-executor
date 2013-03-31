@@ -82,6 +82,12 @@ Add this to your pom.xml:
 </dependencies>
 ```
 
+There are a few versions available, and the best one to use will depend on the version(s) of Maven you need to support:
+
+  - 1.0.1 &mdash; Supports Maven 2.x only
+  - 1.5   &mdash; Supports both Maven 2.x and Maven 3.x
+  - 2.0   &mdash; Supports Maven 3.x only
+
 License
 =======
 
