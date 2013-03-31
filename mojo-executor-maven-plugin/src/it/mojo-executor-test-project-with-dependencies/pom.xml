@@ -45,6 +45,24 @@
                                 <groupId>org.apache.maven.plugins</groupId>
                                 <artifactId>maven-antrun-plugin</artifactId>
                                 <version>1.6</version>
+                                <dependencies>
+                                    <dependency>
+                                        <groupId>ant-contrib</groupId>
+                                        <artifactId>ant-contrib</artifactId>
+                                        <version>1.0b3</version>
+                                        <exclusions>
+                                            <exclusion>
+                                                <groupId>ant</groupId>
+                                                <artifactId>ant</artifactId>
+                                            </exclusion>
+                                        </exclusions>
+                                    </dependency>
+                                    <dependency>
+                                        <groupId>org.apache.ant</groupId>
+                                        <artifactId>ant-nodeps</artifactId>
+                                        <version>1.8.1</version>
+                                    </dependency>
+                                </dependencies>
                             </plugin>
                             <goal>run</goal>
                             <configuration>
@@ -57,24 +75,6 @@
                                     <echo>${pluginName} ran successfully.</echo>
                                 </target>
                             </configuration>
-                            <dependencies>
-                                <dependency>
-                                    <groupId>ant-contrib</groupId>
-                                    <artifactId>ant-contrib</artifactId>
-                                    <version>1.0b3</version>
-                                    <exclusions>
-                                        <exclusion>
-                                            <groupId>ant</groupId>
-                                            <artifactId>ant</artifactId>
-                                        </exclusion>
-                                    </exclusions>
-                                </dependency>
-                                <dependency>
-                                    <groupId>org.apache.ant</groupId>
-                                    <artifactId>ant-nodeps</artifactId>
-                                    <version>1.8.1</version>
-                                </dependency>
-                            </dependencies>
                         </configuration>
                     </execution>
                 </executions>

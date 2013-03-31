@@ -49,6 +49,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.twdata.maven.mojoexecutor.MojoExecutor.artifactId;
 import static org.twdata.maven.mojoexecutor.MojoExecutor.configuration;
+import static org.twdata.maven.mojoexecutor.MojoExecutor.dependencies;
+import static org.twdata.maven.mojoexecutor.MojoExecutor.dependency;
 import static org.twdata.maven.mojoexecutor.MojoExecutor.element;
 import static org.twdata.maven.mojoexecutor.MojoExecutor.executeMojo;
 import static org.twdata.maven.mojoexecutor.MojoExecutor.executionEnvironment;
@@ -83,7 +85,10 @@ public class MojoExecutorTest {
                 eq(plugin(
                         groupId("org.apache.maven.plugins"),
                         artifactId("maven-dependency-plugin"),
-                        version("2.0")
+                        version("2.0"),
+                        dependencies(
+                                dependency("org.apache.maven.plugins", "some-plugin", "1.0")
+                        )
                 )),
                 anyListOf(RemoteRepository.class),
                 same(repositorySession)
@@ -97,7 +102,10 @@ public class MojoExecutorTest {
                 plugin(
                         groupId("org.apache.maven.plugins"),
                         artifactId("maven-dependency-plugin"),
-                        version("2.0")
+                        version("2.0"),
+                        dependencies(
+                                dependency("org.apache.maven.plugins", "some-plugin", "1.0")
+                        )
                 ),
                 goal("copy-dependencies"),
                 configuration(
@@ -128,7 +136,10 @@ public class MojoExecutorTest {
                 plugin(
                         groupId("org.apache.maven.plugins"),
                         artifactId("maven-dependency-plugin"),
-                        version("2.0")
+                        version("2.0"),
+                        dependencies(
+                                dependency("org.apache.maven.plugins", "fake-plugin", "1.0")
+                        )
                 ),
                 goal("copy-dependencies#execution"),
                 configuration(

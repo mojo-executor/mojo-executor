@@ -69,14 +69,6 @@ public class MojoExecutor {
      */
     public static void executeMojo(Plugin plugin, String goal, Xpp3Dom configuration, ExecutionEnvironment env)
             throws MojoExecutionException {
-
-        executeMojo(plugin, goal, configuration, Collections.<Dependency>emptyList(), env);
-    }
-
-    public static void executeMojo(Plugin plugin, String goal, Xpp3Dom configuration, List<Dependency> dependencies,
-                                   ExecutionEnvironment env) throws MojoExecutionException {
-
-
         if (configuration == null) {
             throw new NullPointerException("configuration may not be null");
         }
@@ -86,12 +78,6 @@ public class MojoExecutor {
                 int pos = goal.indexOf('#');
                 executionId = goal.substring(pos + 1);
                 goal = goal.substring(0, pos);
-            }
-
-            if (dependencies != null) {
-                for (Dependency dependency : dependencies) {
-                    plugin.addDependency(dependency);
-                }
             }
 
             MavenSession session = env.getMavenSession();
@@ -156,7 +142,7 @@ public class MojoExecutor {
     }
 
     /**
-     * Defines the plugin without its version
+     * Defines the plugin without its version or dependencies.
      *
      * @param groupId    The group id
      * @param artifactId The artifact id
@@ -167,7 +153,7 @@ public class MojoExecutor {
     }
 
     /**
-     * Defines a plugin
+     * Defines a plugin without dependencies.
      *
      * @param groupId    The group id
      * @param artifactId The artifact id
@@ -175,37 +161,25 @@ public class MojoExecutor {
      * @return The plugin instance
      */
     public static Plugin plugin(String groupId, String artifactId, String version) {
+        return plugin(groupId, artifactId, version, Collections.<Dependency>emptyList());
+    }
+
+    /**
+     * Defines a plugin.
+     *
+     * @param groupId      The group id
+     * @param artifactId   The artifact id
+     * @param version      The plugin version
+     * @param dependencies The plugin dependencies
+     * @return The plugin instance
+     */
+    public static Plugin plugin(String groupId, String artifactId, String version, List<Dependency> dependencies) {
         Plugin plugin = new Plugin();
         plugin.setArtifactId(artifactId);
         plugin.setGroupId(groupId);
         plugin.setVersion(version);
+        plugin.setDependencies(dependencies);
         return plugin;
-    }
-
-    /**
-     * Defines a dependency
-     *
-     * @param groupId    The group id
-     * @param artifactId The artifact id
-     * @param version    The plugin version
-     * @return the dependency instance
-     */
-    public static Dependency dependency(String groupId, String artifactId, String version) {
-        Dependency dependency = new Dependency();
-        dependency.setGroupId(groupId);
-        dependency.setArtifactId(artifactId);
-        dependency.setVersion(version);
-        return dependency;
-    }
-
-    /**
-     * Creates a list of dependencies.
-     *
-     * @param dependencies the dependencies
-     * @return A list of dependencies
-     */
-    public static List<Dependency> dependencies(Dependency... dependencies) {
-        return Arrays.asList(dependencies);
     }
 
     /**
@@ -236,6 +210,32 @@ public class MojoExecutor {
      */
     public static String version(String version) {
         return version;
+    }
+
+    /**
+     * Creates a list of dependencies.
+     *
+     * @param dependencies the dependencies
+     * @return A list of dependencies
+     */
+    public static List<Dependency> dependencies(Dependency... dependencies) {
+        return Arrays.asList(dependencies);
+    }
+
+    /**
+     * Defines a dependency
+     *
+     * @param groupId    The group id
+     * @param artifactId The artifact id
+     * @param version    The plugin version
+     * @return the dependency instance
+     */
+    public static Dependency dependency(String groupId, String artifactId, String version) {
+        Dependency dependency = new Dependency();
+        dependency.setGroupId(groupId);
+        dependency.setArtifactId(artifactId);
+        dependency.setVersion(version);
+        return dependency;
     }
 
     /**
