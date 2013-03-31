@@ -1,170 +1,156 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset='utf-8'>
 
-  <title>TimMoore/mojo-executor @ GitHub</title>
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Mojo Executor : The Mojo Executor provides a way to to execute other Mojos (plugins) within a Maven plugin, allowing you to easily create Maven plugins that are composed of other plugins. " />
 
-  <style type="text/css">
-    body {
-      margin-top: 1.0em;
-      background-color: #031634;
-      font-family: Helvetica, Arial, FreeSans, san-serif;
-      color: #ffffff;
-    }
-    #container {
-      margin: 0 auto;
-      width: 700px;
-    }
-    h1 { font-size: 3.8em; color: #fce9cb; margin-bottom: 3px; }
-    h1 .small { font-size: 0.4em; }
-    h1 a { text-decoration: none }
-    h2 { font-size: 1.5em; color: #fce9cb; }
-    h3 { text-align: center; color: #fce9cb; }
-    a { color: #fce9cb; }
-    .description { font-size: 1.2em; margin-bottom: 30px; margin-top: 30px; font-style: italic;}
-    .download { float: right; }
-    pre { background: #000; color: #fff; padding: 15px;}
-    hr { border: 0; width: 80%; border-bottom: 1px solid #aaa}
-    .footer { text-align:center; padding-top:30px; font-style: italic; }
-  </style>
-</head>
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
 
-<body>
-  <a href="http://github.com/TimMoore/mojo-executor"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
+    <title>Mojo Executor</title>
+  </head>
 
-  <div id="container">
+  <body>
 
-    <div class="download">
-      <a href="http://github.com/TimMoore/mojo-executor/zipball/master">
-        <img border="0" width="90" src="http://github.com/images/modules/download/zip.png"></a>
-      <a href="http://github.com/TimMoore/mojo-executor/tarball/master">
-        <img border="0" width="90" src="http://github.com/images/modules/download/tar.png"></a>
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/TimMoore/mojo-executor">View on GitHub</a>
+
+          <h1 id="project_title">Mojo Executor</h1>
+          <h2 id="project_tagline">The Mojo Executor provides a way to to execute other Mojos (plugins) within a Maven plugin, allowing you to easily create Maven plugins that are composed of other plugins. </h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/TimMoore/mojo-executor/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/TimMoore/mojo-executor/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
     </div>
 
-    <h1><a href="http://github.com/TimMoore/mojo-executor">mojo-executor</a>
-      <span class="small">by <a href="http://github.com/TimMoore">TimMoore</a></span></h1>
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <p>The Mojo Executor provides a way to to execute other Mojos (plugins) within a Maven plugin, allowing you to easily create Maven plugins that are composed of other plugins.</p>
 
-    <div class="description">
-      The Mojo Executor provides a way to to execute other Mojos (plugins) within a Maven plugin, allowing you to easily create Maven plugins that are composed of other plugins.
+<h1>Downloads</h1>
+
+<p>You can download the jars, source, and javadocs from Maven central:</p>
+
+<p><a href="http://repo2.maven.org/maven2/org/twdata/maven/mojo-executor/">http://repo2.maven.org/maven2/org/twdata/maven/mojo-executor/</a></p>
+
+<h1>Example Usage</h1>
+
+<p>This is how you would execute the "copy-dependencies" goal of the Maven Dependency Plugin programmatically:</p>
+
+<div class="highlight"><pre><span class="n">executeMojo</span><span class="o">(</span>
+    <span class="n">plugin</span><span class="o">(</span>
+        <span class="n">groupId</span><span class="o">(</span><span class="s">"org.apache.maven.plugins"</span><span class="o">),</span>
+        <span class="n">artifactId</span><span class="o">(</span><span class="s">"maven-dependency-plugin"</span><span class="o">),</span>
+        <span class="n">version</span><span class="o">(</span><span class="s">"2.0"</span><span class="o">)</span>
+    <span class="o">),</span>
+    <span class="n">goal</span><span class="o">(</span><span class="s">"copy-dependencies"</span><span class="o">),</span>
+    <span class="n">configuration</span><span class="o">(</span>
+        <span class="n">element</span><span class="o">(</span><span class="n">name</span><span class="o">(</span><span class="s">"outputDirectory"</span><span class="o">),</span> <span class="s">"${project.build.directory}/foo"</span><span class="o">)</span>
+    <span class="o">),</span>
+    <span class="n">executionEnvironment</span><span class="o">(</span>
+        <span class="n">project</span><span class="o">,</span>
+        <span class="n">session</span><span class="o">,</span>
+        <span class="n">pluginManager</span>
+    <span class="o">)</span>
+<span class="o">);</span>
+</pre></div>
+
+<p>The project, session, and pluginManager variables should be injected via the normal Mojo injection:</p>
+
+<div class="highlight"><pre><span class="cm">/**</span>
+<span class="cm"> * The project currently being build.</span>
+<span class="cm"> *</span>
+<span class="cm"> * @parameter expression="${project}"</span>
+<span class="cm"> * @required</span>
+<span class="cm"> * @readonly</span>
+<span class="cm"> */</span>
+<span class="kd">private</span> <span class="n">MavenProject</span> <span class="n">mavenProject</span><span class="o">;</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * The current Maven session.</span>
+<span class="cm"> *</span>
+<span class="cm"> * @parameter expression="${session}"</span>
+<span class="cm"> * @required</span>
+<span class="cm"> * @readonly</span>
+<span class="cm"> */</span>
+<span class="kd">private</span> <span class="n">MavenSession</span> <span class="n">mavenSession</span><span class="o">;</span>
+
+<span class="cm">/**</span>
+<span class="cm"> * The Maven BuildPluginManager component.</span>
+<span class="cm"> *</span>
+<span class="cm"> * @component</span>
+<span class="cm"> * @required</span>
+<span class="cm"> */</span>
+<span class="kd">private</span> <span class="n">BuildPluginManager</span> <span class="n">pluginManager</span><span class="o">;</span>
+</pre></div>
+
+<p>You might need to add other annotations to your Mojo class, depending on the needs of your plugin. Annotations declared by Mojos that you execute are <em>not</em> automatically inherited by your enclosing Mojo.</p>
+
+<p>For example, if you are using the <code>maven-dependency-plugin</code>, as in this example, you will need to add <code>@requiresDependencyResolution &lt;scope&gt;</code> to your class annotations to ensure that Maven resolves the project dependencies before invoking your plugin.</p>
+
+<p>See the <a href="http://maven.apache.org/developers/mojo-api-specification.html">Mojo API Specification</a> for details on available annotations. Look at the included <a href="mojo-executor-maven-plugin/">example plugin</a> for an example of use.</p>
+
+<h1>Maven Dependency</h1>
+
+<p>Add this to your pom.xml:</p>
+
+<div class="highlight"><pre><span class="nt">&lt;dependencies&gt;</span>
+    <span class="nt">&lt;dependency&gt;</span>
+        <span class="nt">&lt;groupId&gt;</span>org.twdata.maven<span class="nt">&lt;/groupId&gt;</span>
+        <span class="nt">&lt;artifactId&gt;</span>mojo-executor<span class="nt">&lt;/artifactId&gt;</span>
+        <span class="nt">&lt;version&gt;</span>2.0<span class="nt">&lt;/version&gt;</span>
+    <span class="nt">&lt;/dependency&gt;</span>
+<span class="nt">&lt;/dependencies&gt;</span>
+</pre></div>
+
+<p>There are a few versions available, and the best one to use will depend on the version(s) of Maven you need to support:</p>
+
+<ul>
+<li>1.0.1 — Supports Maven 2.x only</li>
+<li>1.5   — Supports both Maven 2.x and Maven 3.x</li>
+<li>2.0   — Supports Maven 3.x only</li>
+</ul><h1>License</h1>
+
+<p>Copyright 2008-2013 Don Brown</p>
+
+<p>Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at</p>
+
+<p><a href="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</a></p>
+
+<p>Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.</p>
+
+<h1>Contributors</h1>
+
+<p>Mojo Executor was originally created by <a href="https://github.com/mrdon">Don Brown</a> (<a href="mailto:mrdon@twdata.org">mrdon@twdata.org</a>).</p>
+
+<p>It is currently maintained by <a href="https://github.com/TimMoore/">Tim Moore</a> (<a href="mailto:tmoore@incrementalism.net">tmoore@incrementalism.net</a>).</p>
+
+<p>Thanks to the following contributors, who have provided patches and other assistance:</p>
+
+<ul>
+<li>  <a href="https://github.com/matthewmccullough">Matthew McCullough</a>
+</li>
+<li>  Gili Tzabari (<a href="mailto:cowwoc@bbs.darktech.org">cowwoc@bbs.darktech.org</a>) — Maven 3 support</li>
+<li>  <a href="https://github.com/josephw">Joseph Walton</a> — support for both Maven 2 and Maven 3 in the same artifact</li>
+</ul>
+      </section>
     </div>
 
-    <p>This is how you would execute the "copy-dependencies" goal of the Maven 2 Dependency Plugin programmatically:</p>
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Mojo Executor maintained by <a href="https://github.com/TimMoore">TimMoore</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
 
-    <pre>
-    executeMojo(
-        plugin(
-            groupId("org.apache.maven.plugins"),
-            artifactId("maven-dependency-plugin"),
-            version("2.0")
-        ),
-        goal("copy-dependencies"),
-        configuration(
-            element(name("outputDirectory"), "${project.build.directory}/foo")
-        ),
-        executionEnvironment(
-            project,
-            session,
-            pluginManager
-        )
-    );
-    </pre>
-
-    <p>The project, session, and pluginManager variables should be injected via the normal Mojo injection:</p>
-
-    <pre>
-    /**
-     * The Maven Project Object
-     *
-     * @parameter expression="${project}"
-     * @required
-     * @readonly
-     */
-    protected MavenProject project;
-
-    /**
-     * The Maven Session Object
-     *
-     * @parameter expression="${session}"
-     * @required
-     * @readonly
-     */
-    protected MavenSession session;
-
-    /**
-     * The Maven PluginManager Object
-     *
-     * @component
-     * @required
-     */
-    protected PluginManager pluginManager;
-    </pre>
-
-    <h2>Usage</h2>
-
-    <p>Add this to your pom.xml:</p>
-
-    <pre>
-    &lt;dependencies&gt;
-        &lt;dependency&gt;
-            &lt;groupId&gt;org.twdata.maven&lt;/groupId&gt;
-            &lt;artifactId&gt;mojo-executor&lt;/artifactId&gt;
-            &lt;version&gt;2.0&lt;/version&gt;
-        &lt;/dependency&gt;
-    &lt;/dependencies&gt;
-    </pre>
     
-    <p>There are a few versions available, and the best one to use will depend on the version(s) of Maven you need to support:</p>
-    <dl>
-      <dt>1.0.1</dt><dd>Supports Maven 2.x only</dd>
-      <dt>1.5</dt><dd>Supports both Maven 2.x and Maven 3.x</dd>
-      <dt>2.0</dt><dd>Supports Maven 3.x only</dd>
-    </dl>
 
-    <h2>License</h2>
-
-    <p>Copyright 2008-2011 Don Brown</p>
-
-    <p>Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at</p>
-
-    <p><a href="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</a></p>
-
-    <p>Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.</p>
-
-    <h2>Authors</h2>
-
-    <ul>
-        <li>Don Brown (mrdon@twdata.org)</li>
-        <li>Matthew McCullough (matthewm@ambientideas.com)</li>
-        <li>Tim Moore (tmoore@incrementalism.net)</li>
-        <li>Gili Tzabari (cowwoc@bbs.darktech.org)
-            &mdash; Maven 3 support</li>
-        <li>Joseph Walton (joe@kafsemo.org)
-            &mdash; support for both Maven 2 and Maven 3 in the same artifact</li>
-    </ul>
-
-    <h2>Contact</h2>
-
-    <p>Tim Moore (tmoore@incrementalism.net)</p>
-
-
-    <h2>Download</h2>
-    <p>
-      You can download the source code for this project in either
-      <a href="http://github.com/TimMoore/mojo-executor/zipball/master">zip</a> or
-      <a href="http://github.com/TimMoore/mojo-executor/tarball/master">tar</a> formats.
-    </p>
-    <p>You can also clone the project with <a href="http://git-scm.com">Git</a>
-      by running:
-      <pre>$ git clone git://github.com/TimMoore/mojo-executor</pre>
-    </p>
-
-    <div class="footer">
-      get the source code on GitHub : <a href="http://github.com/TimMoore/mojo-executor">TimMoore/mojo-executor</a>
-    </div>
-
-  </div>
-
-  
-</body>
+  </body>
 </html>
