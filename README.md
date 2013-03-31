@@ -61,6 +61,12 @@ private MavenSession mavenSession;
 private BuildPluginManager pluginManager;
 ```
 
+You might need to add other annotations to your Mojo class, depending on the needs of your plugin. Annotations declared by Mojos that you execute are _not_ automatically inherited by your enclosing Mojo.
+
+For example, if you are using the `maven-dependency-plugin`, as in this example, you will need to add `@requiresDependencyResolution <scope>` to your class annotations to ensure that Maven resolves the project dependencies before invoking your plugin.
+
+See the [Mojo API Specification][mojo-api] for details on available annotations.
+
 Maven Dependency
 ================
 
@@ -104,3 +110,5 @@ Thanks to the following contributors, who have provided patches and other assist
 [TimMoore]: https://github.com/TimMoore/
 [matthewmccullough]: https://github.com/matthewmccullough
 [josephw]: https://github.com/josephw
+
+[mojo-api]: http://maven.apache.org/developers/mojo-api-specification.html
