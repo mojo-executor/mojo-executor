@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Copyright 2008-2011 Don Brown
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.twdata.maven</groupId>
+    <artifactId>mojo-executor-test-project</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <name>Mojo Executor - Test Project</name>
+    <description>
+        Used by the tests for the Mojo Executor Maven Plugin.
+    </description>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.twdata.maven</groupId>
+                <artifactId>mojo-executor-maven-plugin</artifactId>
+                <version>@project.version@</version>
+                <executions>
+                    <execution>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>execute-mojo</goal>
+                        </goals>
+                        <configuration>
+                            <plugin>
+                                <groupId>org.apache.maven.plugins</groupId>
+                                <artifactId>maven-antrun-plugin</artifactId>
+                                <version>1.6</version>
+                            </plugin>
+                            <goal>run</goal>
+                            <configuration>
+                                <target>
+                                    <taskdef resource="net/sf/antcontrib/antcontrib.properties"
+                                             classpathref="maven.plugin.classpath" />
+
+                                    <var name="pluginName" value="Mojo Executor"/>
+
+                                    <echo>${pluginName} ran successfully.</echo>
+                                </target>
+                            </configuration>
+                            <dependencies>
+                                <dependency>
+                                    <groupId>ant-contrib</groupId>
+                                    <artifactId>ant-contrib</artifactId>
+                                    <version>1.0b3</version>
+                                    <exclusions>
+                                        <exclusion>
+                                            <groupId>ant</groupId>
+                                            <artifactId>ant</artifactId>
+                                        </exclusion>
+                                    </exclusions>
+                                </dependency>
+                                <dependency>
+                                    <groupId>org.apache.ant</groupId>
+                                    <artifactId>ant-nodeps</artifactId>
+                                    <version>1.8.1</version>
+                                </dependency>
+                            </dependencies>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>
