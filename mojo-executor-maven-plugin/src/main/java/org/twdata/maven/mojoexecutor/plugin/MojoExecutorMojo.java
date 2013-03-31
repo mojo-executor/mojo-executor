@@ -16,12 +16,15 @@
 package org.twdata.maven.mojoexecutor.plugin;
 
 import org.apache.maven.execution.MavenSession;
+import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Plugin;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.BuildPluginManager;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration;
+
+import java.util.List;
 
 import static org.twdata.maven.mojoexecutor.MojoExecutor.executeMojo;
 import static org.twdata.maven.mojoexecutor.MojoExecutor.executionEnvironment;
@@ -57,6 +60,14 @@ public class MojoExecutorMojo extends AbstractMojo {
      */
     private XmlPlexusConfiguration configuration;
 
+
+    /**
+     * Dependency configuration to use in the execution.
+     *
+     * @parameter
+     */
+    private List<Dependency> dependencies;
+
     /**
      * The project currently being build.
      *
@@ -84,7 +95,7 @@ public class MojoExecutorMojo extends AbstractMojo {
     private BuildPluginManager pluginManager;
 
     public void execute() throws MojoExecutionException {
-        executeMojo(plugin, goal, toXpp3Dom(configuration),
+        executeMojo(plugin, goal, toXpp3Dom(configuration), dependencies,
                 executionEnvironment(mavenProject, mavenSession, pluginManager));
     }
 }
