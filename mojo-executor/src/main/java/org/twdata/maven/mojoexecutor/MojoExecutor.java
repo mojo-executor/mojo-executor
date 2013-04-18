@@ -25,11 +25,17 @@ import org.apache.maven.plugin.MojoExecution;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.PluginManager;
 import org.apache.maven.plugin.descriptor.MojoDescriptor;
+import org.apache.maven.plugin.descriptor.Parameter;
 import org.apache.maven.plugin.descriptor.PluginDescriptor;
 import org.apache.maven.project.MavenProject;
+import org.codehaus.plexus.configuration.PlexusConfiguration;
+import org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.codehaus.plexus.util.xml.Xpp3DomUtils;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -140,6 +146,7 @@ public class MojoExecutor {
         if (configuration == null) {
             throw new NullPointerException("configuration may not be null");
         }
+        Map<String, PluginExecution> executionMap = null;
         try {
             String executionId = null;
             if (goal != null && goal.length() > 0 && goal.indexOf('#') > -1) {
@@ -162,13 +169,69 @@ public class MojoExecutor {
                         + plugin.getArtifactId() + ":"
                         + plugin.getVersion());
             }
-            MojoExecution exec = mojoExecution3(mojoDescriptor, executionId, configuration);
+
+            // merge config from pom
+            // Unlike maven 2, maven 3 seems to just add the entire pom config and fails if a param
+            // is defined in the pom but not on the mojo, so we need to be smart about this...
+            Xpp3Dom mergedConfig = mergeMaven3PomConfig(plugin,configuration,mojoDescriptor,env.getMavenProject(),executionId,goal);
+
+            MojoExecution exec = mojoExecution3(mojoDescriptor, executionId, mergedConfig);
+
             env.getBuildPluginManager().executeMojo(session, exec);
         } catch (Exception e) {
             throw new MojoExecutionException("Unable to execute mojo", e);
         }
     }
 
+    private static Xpp3Dom mergeMaven3PomConfig(Plugin plugin, Xpp3Dom configuration, MojoDescriptor mojoDescriptor, MavenProject project, String executionId, String goal)
+    {
+        Xpp3Dom finalConfiguration = new Xpp3Dom( "configuration" );
+        
+        Xpp3Dom pomConfig = null;
+        List buildPlugins = project.getBuildPlugins();
+        if (buildPlugins != null && null == executionId) {
+            for (Object buildPlugin : buildPlugins) {
+                Plugin pomPlugin = (Plugin) buildPlugin;
+
+                if (plugin.getGroupId().equals(pomPlugin.getGroupId()) && plugin.getArtifactId().equals(pomPlugin.getArtifactId())) {
+                    pomConfig = project.getGoalConfiguration(plugin.getGroupId(), plugin.getArtifactId(), executionId, goal);
+                    break;
+                }
+            }
+        }
+
+        Xpp3Dom mergedConfig = configuration;
+        
+        if(null != pomConfig)
+        {
+            mergedConfig = Xpp3DomUtils.mergeXpp3Dom(pomConfig, configuration ,true);
+
+            if(null != mergedConfig && null != mojoDescriptor.getParameters())
+            {
+                for(Parameter param : mojoDescriptor.getParameters())
+                {
+                    Xpp3Dom pomParam = mergedConfig.getChild(param.getName());
+                    
+                    if(null == pomParam)
+                    {
+                        pomParam = mergedConfig.getChild(param.getAlias());
+                    }
+                    
+                    if(null != pomParam)
+                    {
+                        finalConfiguration.addChild(pomParam);
+                    }
+                }
+            }
+        }
+        else
+        {
+            finalConfiguration = Xpp3DomUtils.mergeXpp3Dom(configuration, finalConfiguration ,true);
+        }
+        
+        return finalConfiguration;
+    }
+    
     @SuppressWarnings({"unchecked"}) // Maven 2 API isn't generic
     private static Map<String, PluginExecution> getExecutionsAsMap(Plugin pomPlugin) {
         return (Map<String, PluginExecution>) pomPlugin.getExecutionsAsMap();
