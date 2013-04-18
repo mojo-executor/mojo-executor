@@ -60,6 +60,14 @@
                 <role>Current Maintainer</role>
             </roles>
         </developer>
+        <developer>
+            <id>Doklovic</id>
+            <name>Jonathan Doklovic</name>
+            <email>nospam@sysbliss.com</email>
+            <roles>
+                <role>Current Maintainer</role>
+            </roles>
+        </developer>
     </developers>
     <contributors>
         <contributor>
