@@ -33,13 +33,20 @@
       <section id="main_content" class="inner">
         <p>The Mojo Executor provides a way to to execute other Mojos (plugins) within a Maven plugin, allowing you to easily create Maven plugins that are composed of other plugins.</p>
 
-<h1>Downloads</h1>
+<h1>
+<a name="downloads" class="anchor" href="#downloads"><span class="octicon octicon-link"></span></a>Downloads</h1>
 
 <p>You can download the jars, source, and javadocs from Maven central:</p>
 
 <p><a href="http://repo2.maven.org/maven2/org/twdata/maven/mojo-executor/">http://repo2.maven.org/maven2/org/twdata/maven/mojo-executor/</a></p>
 
-<h1>Example Usage</h1>
+<h1>
+<a name="example-usage" class="anchor" href="#example-usage"><span class="octicon octicon-link"></span></a>Example Usage</h1>
+
+<p>MojoExecutor defines a number of builder methods that are intended to be imported statically:</p>
+
+<div class="highlight"><pre><span class="kn">import</span> <span class="nn">static</span> <span class="n">org</span><span class="o">.</span><span class="na">twdata</span><span class="o">.</span><span class="na">maven</span><span class="o">.</span><span class="na">mojoexecutor</span><span class="o">.</span><span class="na">MojoExecutor</span><span class="o">.*</span>
+</pre></div>
 
 <p>This is how you would execute the "copy-dependencies" goal of the Maven Dependency Plugin programmatically:</p>
 
@@ -96,7 +103,8 @@
 
 <p>See the <a href="http://maven.apache.org/developers/mojo-api-specification.html">Mojo API Specification</a> for details on available annotations. Look at the included <a href="mojo-executor-maven-plugin/">example plugin</a> for an example of use.</p>
 
-<h1>Maven Dependency</h1>
+<h1>
+<a name="maven-dependency" class="anchor" href="#maven-dependency"><span class="octicon octicon-link"></span></a>Maven Dependency</h1>
 
 <p>Add this to your pom.xml:</p>
 
@@ -115,7 +123,8 @@
 <li>1.0.1 — Supports Maven 2.x only</li>
 <li>1.5   — Supports both Maven 2.x and Maven 3.x</li>
 <li>2.0   — Supports Maven 3.x only</li>
-</ul><h1>License</h1>
+</ul><h1>
+<a name="license" class="anchor" href="#license"><span class="octicon octicon-link"></span></a>License</h1>
 
 <p>Copyright 2008-2013 Don Brown</p>
 
@@ -125,7 +134,8 @@
 
 <p>Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.</p>
 
-<h1>Contributors</h1>
+<h1>
+<a name="contributors" class="anchor" href="#contributors"><span class="octicon octicon-link"></span></a>Contributors</h1>
 
 <p>Mojo Executor was originally created by <a href="https://github.com/mrdon">Don Brown</a> (<a href="mailto:mrdon@twdata.org">mrdon@twdata.org</a>).</p>
 
