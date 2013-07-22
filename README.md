@@ -10,6 +10,12 @@ http://repo2.maven.org/maven2/org/twdata/maven/mojo-executor/
 Example Usage
 =============
 
+MojoExecutor defines a number of builder methods that are intended to be imported statically:
+
+``` java
+import static org.twdata.maven.mojoexecutor.MojoExecutor.*
+```
+
 This is how you would execute the "copy-dependencies" goal of the Maven Dependency Plugin programmatically:
 
 ``` java
