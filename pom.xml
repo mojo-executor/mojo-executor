@@ -130,6 +130,11 @@
                 <version>1.7</version>
             </dependency>
             <dependency>
+                <groupId>org.eclipse.aether</groupId>
+                <artifactId>aether-api</artifactId>
+                <version>0.9.0.M2</version>
+            </dependency>            
+            <dependency>
                 <groupId>org.sonatype.sisu</groupId>
                 <artifactId>sisu-inject-plexus</artifactId>
                 <version>1.4.2</version>
