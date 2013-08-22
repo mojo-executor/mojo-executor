@@ -82,11 +82,7 @@ public class MojoExecutor {
 
             MavenSession session = env.getMavenSession();
 
-            PluginDescriptor pluginDescriptor =
-                    env.getPluginManager().loadPlugin(
-                            plugin,
-                            env.getMavenProject().getRemotePluginRepositories(),
-                            session.getRepositorySession());
+            PluginDescriptor pluginDescriptor = MavenCompatibilityHelper.loadPluginDescriptor(plugin, env, session);
             MojoDescriptor mojoDescriptor = pluginDescriptor.getMojo(goal);
             if (mojoDescriptor == null) {
                 throw new MojoExecutionException("Could not find goal '" + goal + "' in plugin "
