@@ -63,6 +63,9 @@
     </developers>
     <contributors>
         <contributor>
+            <name>Jelmer Kuperus</name>
+        </contributor>
+        <contributor>
             <name>Olivier Lamy</name>
             <email>olamy@apache.org</email>
         </contributor>
