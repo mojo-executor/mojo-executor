@@ -63,8 +63,16 @@
     </developers>
     <contributors>
         <contributor>
+            <name>Olivier Lamy</name>
+            <email>olamy@apache.org</email>
+        </contributor>
+        <contributor>
             <name>Matthew McCullough</name>
             <email>matthewm@ambientideas.com</email>
+        </contributor>
+        <contributor>
+            <name>Robert Munteanu</name>
+            <email>robert.munteanu@gmail.com</email>
         </contributor>
         <contributor>
             <name>Gili Tzabari</name>

@@ -117,10 +117,13 @@ Thanks to the following contributors, who have provided patches and other assist
 -   [Matthew McCullough][matthewmccullough]
 -   Gili Tzabari (cowwoc@bbs.darktech.org) &mdash; Maven 3 support
 -   [Joseph Walton][josephw] &mdash; support for both Maven 2 and Maven 3 in the same artifact
+-   [Olivier Lamy][olamy] &amp; [Robert Munteanu][rombert] &mdash; Maven 3.1 support
 
 [mrdon]: https://github.com/mrdon
 [TimMoore]: https://github.com/TimMoore/
 [matthewmccullough]: https://github.com/matthewmccullough
 [josephw]: https://github.com/josephw
+[olamy]: https://github.com/olamy
+[rombert]: https://github.com/rombert
 
 [mojo-api]: http://maven.apache.org/developers/mojo-api-specification.html
