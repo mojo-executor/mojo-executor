@@ -27,7 +27,11 @@ import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.codehaus.plexus.util.xml.Xpp3DomUtils;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 import static org.twdata.maven.mojoexecutor.PlexusConfigurationUtils.toXpp3Dom;
 
@@ -307,8 +311,8 @@ public class MojoExecutor {
             for (Element e : children) {
                 dom.addChild(e.toDom());
             }
-            for (String key : attributes.keySet()) {
-                dom.setAttribute(key, attributes.get(key));
+            for (Map.Entry<String, String> entry : attributes.entrySet()) {
+                dom.setAttribute(entry.getKey(), entry.getValue());
             }
             return dom;
         }
