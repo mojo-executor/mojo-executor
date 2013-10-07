@@ -30,6 +30,8 @@ import org.codehaus.plexus.util.xml.Xpp3DomUtils;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 
 import static org.twdata.maven.mojoexecutor.PlexusConfigurationUtils.toXpp3Dom;
 
@@ -281,6 +283,7 @@ public class MojoExecutor {
      */
     public static class Element {
         private final Element[] children;
+        private final Map<String, String> attributes;
         private final String name;
         private final String text;
 
@@ -292,6 +295,12 @@ public class MojoExecutor {
             this.name = name;
             this.text = text;
             this.children = children;
+            this.attributes = new HashMap<String, String>();
+        }
+
+        public Element attribute(String key, String value) {
+            attributes.put(key, value);
+            return this;
         }
 
         public Xpp3Dom toDom() {
@@ -301,6 +310,9 @@ public class MojoExecutor {
             }
             for (Element e : children) {
                 dom.addChild(e.toDom());
+            }
+            for (Map.Entry<String, String> entry : attributes.entrySet()) {
+                dom.setAttribute(entry.getKey(), entry.getValue());
             }
             return dom;
         }

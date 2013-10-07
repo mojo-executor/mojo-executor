@@ -96,6 +96,44 @@ public class MojoExecutorTest {
     }
 
     @Test
+    public void executeMojoWithoutExecutionIdExecutesMojoWithAttributesInConfiguration() throws Exception {
+
+        executeMojo(
+                plugin(
+                        groupId("org.apache.maven.plugins"),
+                        artifactId("maven-dependency-plugin"),
+                        version("2.0"),
+                        dependencies(
+                                dependency("org.apache.maven.plugins", "some-plugin", "1.0")
+                        )
+                ),
+                goal("copy-dependencies"),
+                configuration(
+                        element(name("outputDirectory"))
+                                .attribute("dir", "${project.build.directory}/foo")
+                                .attribute("force", "true")
+                ),
+                executionEnvironment(
+                        project,
+                        session,
+                        pluginManager
+                )
+        );
+        verify(pluginManager)
+                .executeMojo(
+                        same(session),
+                        argThat(is(equalTo(new MojoExecution(
+                                copyDependenciesMojoDescriptor,
+                                configuration(
+                                        element(name("outputDirectory"))
+                                                .attribute("dir", "${project.build.directory}/foo")
+                                                .attribute("force", "true")
+                                )
+                        ))))
+                );
+    }
+
+    @Test
     public void executeMojoWithoutExecutionIdExecutesMojoWithExplicitConfiguration() throws Exception {
 
         executeMojo(
