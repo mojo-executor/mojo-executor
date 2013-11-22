@@ -331,7 +331,7 @@ public class MojoExecutor {
         private final Attributes attributes;
 
         public Element(String name, Element... children) {
-            this(name, null, null, children);
+            this(name, null, new Attributes(), children);
         }
 
         public Element(String name, Attributes attributes, Element... children) {

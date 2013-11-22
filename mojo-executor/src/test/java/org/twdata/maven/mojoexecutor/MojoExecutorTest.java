@@ -103,6 +103,12 @@ public class MojoExecutorTest {
                         attribute("dir", "${project.build.directory}/foo"),
                         attribute("force", "true")
                     )
+                ),
+                element(
+                    "without-attrs",
+                    element(
+                        "without-attrs", "value"
+                    )
                 )
             ),
             executionEnvironment(
@@ -122,6 +128,12 @@ public class MojoExecutorTest {
                             attributes(
                                 attribute("dir", "${project.build.directory}/foo"),
                                 attribute("force", "true")
+                            )
+                        ),
+                        element(
+                            "without-attrs",
+                            element(
+                                "without-attrs", "value"
                             )
                         )
                     )
