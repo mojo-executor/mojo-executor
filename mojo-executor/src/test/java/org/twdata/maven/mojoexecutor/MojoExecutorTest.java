@@ -47,18 +47,7 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Matchers.same;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.twdata.maven.mojoexecutor.MojoExecutor.artifactId;
-import static org.twdata.maven.mojoexecutor.MojoExecutor.configuration;
-import static org.twdata.maven.mojoexecutor.MojoExecutor.dependencies;
-import static org.twdata.maven.mojoexecutor.MojoExecutor.dependency;
-import static org.twdata.maven.mojoexecutor.MojoExecutor.element;
-import static org.twdata.maven.mojoexecutor.MojoExecutor.executeMojo;
-import static org.twdata.maven.mojoexecutor.MojoExecutor.executionEnvironment;
-import static org.twdata.maven.mojoexecutor.MojoExecutor.goal;
-import static org.twdata.maven.mojoexecutor.MojoExecutor.groupId;
-import static org.twdata.maven.mojoexecutor.MojoExecutor.name;
-import static org.twdata.maven.mojoexecutor.MojoExecutor.plugin;
-import static org.twdata.maven.mojoexecutor.MojoExecutor.version;
+import static org.twdata.maven.mojoexecutor.MojoExecutor.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MojoExecutorTest {
@@ -93,6 +82,51 @@ public class MojoExecutorTest {
                 anyListOf(RemoteRepository.class),
                 same(repositorySession)
         )).thenReturn(mavenDependencyPluginDescriptor);
+    }
+
+    @Test
+    public void executeMojoWithoutExecutionIdExecutesMojoWithAttributesInConfiguration() throws Exception {
+        executeMojo(
+            plugin(
+                groupId("org.apache.maven.plugins"),
+                artifactId("maven-dependency-plugin"),
+                version("2.0"),
+                dependencies(
+                    dependency("org.apache.maven.plugins", "some-plugin", "1.0")
+                )
+            ),
+            goal("copy-dependencies"),
+            configuration(
+                element(
+                    name("outputDirectory"),
+                    attributes(
+                        attribute("dir", "${project.build.directory}/foo"),
+                        attribute("force", "true")
+                    )
+                )
+            ),
+            executionEnvironment(
+                project,
+                session,
+                pluginManager
+            )
+        );
+        verify(pluginManager)
+            .executeMojo(
+                same(session),
+                argThat(is(equalTo(new MojoExecution(
+                    copyDependenciesMojoDescriptor,
+                    configuration(
+                        element(
+                            name("outputDirectory"),
+                            attributes(
+                                attribute("dir", "${project.build.directory}/foo"),
+                                attribute("force", "true")
+                            )
+                        )
+                    )
+                ))))
+            );
     }
 
     @Test
