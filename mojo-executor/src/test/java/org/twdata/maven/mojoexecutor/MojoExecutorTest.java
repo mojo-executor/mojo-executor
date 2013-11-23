@@ -109,6 +109,10 @@ public class MojoExecutorTest {
                     element(
                         "without-attrs", "value"
                     )
+                ),
+                element(
+                    "only-attribute",
+                    attribute("attribute", "value")
                 )
             ),
             executionEnvironment(
@@ -134,6 +138,12 @@ public class MojoExecutorTest {
                             "without-attrs",
                             element(
                                 "without-attrs", "value"
+                            )
+                        ),
+                        element(
+                            "only-attribute",
+                            attributes(
+                                attribute("attribute", "value")
                             )
                         )
                     )

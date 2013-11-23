@@ -278,6 +278,18 @@ public class MojoExecutor {
     }
 
     /**
+     * Constructs the element with a textual body and only attribute
+     *
+     * @param name       The element name
+     * @param value      The element text value
+     * @param attribute  The element attribute
+     * @return The element object
+     */
+    public static Element element(String name, String value, Attribute attribute) {
+        return new Element(name, value, new Attributes(attribute));
+    }
+
+    /**
      * Constructs the element containing child elements
      *
      * @param name     The element name
@@ -298,6 +310,18 @@ public class MojoExecutor {
      */
     public static Element element(String name, Attributes attributes, Element... elements) {
         return new Element(name, attributes, elements);
+    }
+
+    /**
+     * Constructs the element containing child elements and only attribute
+     *
+     * @param name       The element name
+     * @param attribute  The element attribute
+     * @param elements   The child elements
+     * @return The Element object
+     */
+    public static Element element(String name, Attribute attribute, Element... elements) {
+        return new Element(name, new Attributes(attribute), elements);
     }
 
     /**
