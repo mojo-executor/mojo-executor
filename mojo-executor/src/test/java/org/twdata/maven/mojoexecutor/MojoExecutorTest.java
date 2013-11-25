@@ -59,6 +59,8 @@ import static org.twdata.maven.mojoexecutor.MojoExecutor.groupId;
 import static org.twdata.maven.mojoexecutor.MojoExecutor.name;
 import static org.twdata.maven.mojoexecutor.MojoExecutor.plugin;
 import static org.twdata.maven.mojoexecutor.MojoExecutor.version;
+import static org.twdata.maven.mojoexecutor.MojoExecutor.attributes;
+import static org.twdata.maven.mojoexecutor.MojoExecutor.attribute;
 
 @RunWith(MockitoJUnitRunner.class)
 public class MojoExecutorTest {
@@ -93,6 +95,73 @@ public class MojoExecutorTest {
                 anyListOf(RemoteRepository.class),
                 same(repositorySession)
         )).thenReturn(mavenDependencyPluginDescriptor);
+    }
+
+    @Test
+    public void executeMojoWithoutExecutionIdExecutesMojoWithAttributesInConfiguration() throws Exception {
+        executeMojo(
+            plugin(
+                groupId("org.apache.maven.plugins"),
+                artifactId("maven-dependency-plugin"),
+                version("2.0"),
+                dependencies(
+                    dependency("org.apache.maven.plugins", "some-plugin", "1.0")
+                )
+            ),
+            goal("copy-dependencies"),
+            configuration(
+                element(
+                    name("outputDirectory"),
+                    attributes(
+                        attribute("dir", "${project.build.directory}/foo"),
+                        attribute("force", "true")
+                    )
+                ),
+                element(
+                    "without-attrs",
+                    element(
+                        "without-attrs", "value"
+                    )
+                ),
+                element(
+                    "only-attribute",
+                    attribute("attribute", "value")
+                )
+            ),
+            executionEnvironment(
+                project,
+                session,
+                pluginManager
+            )
+        );
+        verify(pluginManager)
+            .executeMojo(
+                same(session),
+                argThat(is(equalTo(new MojoExecution(
+                    copyDependenciesMojoDescriptor,
+                    configuration(
+                        element(
+                            name("outputDirectory"),
+                            attributes(
+                                attribute("dir", "${project.build.directory}/foo"),
+                                attribute("force", "true")
+                            )
+                        ),
+                        element(
+                            "without-attrs",
+                            element(
+                                "without-attrs", "value"
+                            )
+                        ),
+                        element(
+                            "only-attribute",
+                            attributes(
+                                attribute("attribute", "value")
+                            )
+                        )
+                    )
+                ))))
+            );
     }
 
     @Test
