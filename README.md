@@ -3,6 +3,7 @@ The Mojo Executor provides a way to to execute other Mojos (plugins) within a Ma
 News
 ====
 
+26 Nov 2013 &mdash; Mojo Executor 2.2.0 released with support for attributes in plugin configuration.
 25 Aug 2013 &mdash; Mojo Executor 2.1.0 released with support for Maven 3.1.
 
 Downloads
@@ -125,6 +126,7 @@ Thanks to the following contributors, who have provided patches and other assist
 -   [Joseph Walton][josephw] &mdash; support for both Maven 2 and Maven 3 in the same artifact
 -   [Olivier Lamy][olamy] &amp; [Robert Munteanu][rombert] &mdash; Maven 3.1 support
 -   [Jelmer Kuperus][jelmerk] &mdash; support for plugin dependencies
+-   [msavelyev][msavelyev] &amp; [Ivan Dyachenko][ivan-dyachenko] &mdash; support for attributes in Mojo configuration
 
 [mrdon]: https://github.com/mrdon
 [TimMoore]: https://github.com/TimMoore/
@@ -133,5 +135,7 @@ Thanks to the following contributors, who have provided patches and other assist
 [olamy]: https://github.com/olamy
 [rombert]: https://github.com/rombert
 [jelmerk]: https://github.com/jelmerk
+[msavelyev]: https://github.com/msavelyev
+[ivan-dyachenko]: https://github.com/ivan-dyachenko
 
 [mojo-api]: http://maven.apache.org/developers/mojo-api-specification.html
