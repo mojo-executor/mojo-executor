@@ -15,8 +15,6 @@
  */
 package org.twdata.maven.mojoexecutor;
 
-import static org.twdata.maven.mojoexecutor.PlexusConfigurationUtils.toXpp3Dom;
-
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.model.Plugin;
 import org.apache.maven.model.PluginExecution;
@@ -28,16 +26,13 @@ import org.apache.maven.plugin.descriptor.MojoDescriptor;
 import org.apache.maven.plugin.descriptor.Parameter;
 import org.apache.maven.plugin.descriptor.PluginDescriptor;
 import org.apache.maven.project.MavenProject;
-import org.codehaus.plexus.configuration.PlexusConfiguration;
-import org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.codehaus.plexus.util.xml.Xpp3DomUtils;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import static org.twdata.maven.mojoexecutor.PlexusConfigurationUtils.toXpp3Dom;
 
 /**
  * Executes an arbitrary mojo using a fluent interface.  This is meant to be executed within the context of a Maven 2
@@ -157,11 +152,8 @@ public class MojoExecutor {
 
             MavenSession session = env.getMavenSession();
 
-            PluginDescriptor pluginDescriptor =
-                    env.getBuildPluginManager().loadPlugin(
-                            plugin,
-                            env.getMavenProject().getRemotePluginRepositories(),
-                            session.getRepositorySession());
+            PluginDescriptor pluginDescriptor = MavenCompatibilityHelper.loadPluginDescriptor(plugin, env, session);
+
             MojoDescriptor mojoDescriptor = pluginDescriptor.getMojo(goal);
             if (mojoDescriptor == null) {
                 throw new MojoExecutionException("Could not find goal '" + goal + "' in plugin "
