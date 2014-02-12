@@ -3,6 +3,7 @@ The Mojo Executor provides a way to to execute other Mojos (plugins) within a Ma
 News
 ====
 
+- 12 Feb 2014 &mdash; I'm looking for a new maintainer for this project. If you're interested, please get in touch!
 - 26 Nov 2013 &mdash; Mojo Executor 2.2.0 released with support for attributes in plugin configuration.
 - 25 Aug 2013 &mdash; Mojo Executor 2.1.0 released with support for Maven 3.1.
 
