@@ -20,7 +20,7 @@
     <parent>
         <groupId>org.twdata.maven</groupId>
         <artifactId>mojo-executor-parent</artifactId>
-        <version>1.5.2</version>
+        <version>1.5.3-SNAPSHOT</version>
     </parent>
 
     <artifactId>mojo-executor</artifactId>
