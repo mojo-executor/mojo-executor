@@ -52,8 +52,8 @@ executeMojo(
         element(name("outputDirectory"), "${project.build.directory}/foo")
     ),
     executionEnvironment(
-        project,
-        session,
+        mavenProject,
+        mavenSession,
         pluginManager
     )
 );
@@ -62,30 +62,13 @@ executeMojo(
 The project, session, and pluginManager variables should be injected via the normal Mojo injection:
 
 ``` java
-/**
- * The project currently being build.
- *
- * @parameter expression="${project}"
- * @required
- * @readonly
- */
+@Component
 private MavenProject mavenProject;
 
-/**
- * The current Maven session.
- *
- * @parameter expression="${session}"
- * @required
- * @readonly
- */
+@Component
 private MavenSession mavenSession;
 
-/**
- * The Maven BuildPluginManager component.
- *
- * @component
- * @required
- */
+@Component
 private BuildPluginManager pluginManager;
 ```
 
