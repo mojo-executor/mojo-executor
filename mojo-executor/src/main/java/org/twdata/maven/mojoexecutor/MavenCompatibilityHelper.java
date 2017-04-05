@@ -15,9 +15,6 @@
  */
 package org.twdata.maven.mojoexecutor;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.model.Plugin;
 import org.apache.maven.plugin.BuildPluginManager;
@@ -26,18 +23,23 @@ import org.apache.maven.plugin.PluginDescriptorParsingException;
 import org.apache.maven.plugin.PluginNotFoundException;
 import org.apache.maven.plugin.PluginResolutionException;
 import org.apache.maven.plugin.descriptor.PluginDescriptor;
+import org.sonatype.aether.repository.RemoteRepository;
 import org.twdata.maven.mojoexecutor.MojoExecutor.ExecutionEnvironment;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.List;
 
 /**
  * The <tt>MavenCompatibilityHelper</tt> hides incompatibilities between Maven versions
- * 
+ *
  */
 public class MavenCompatibilityHelper {
     private static Method getRepositorySession;
     private static Method loadPlugin;
 
     static {
-        
+
         for (Method m : MavenSession.class.getMethods()) {
             if ("getRepositorySession".equals(m.getName())) {
                 getRepositorySession = m;
@@ -60,18 +62,21 @@ public class MavenCompatibilityHelper {
             throw new ExceptionInInitializerError("Unable to locate loadPluginDescriptor method");
         }
     }
-    
+
     public static PluginDescriptor loadPluginDescriptor(Plugin plugin, ExecutionEnvironment env, MavenSession session)
             throws PluginResolutionException, PluginDescriptorParsingException, InvalidPluginDescriptorException,
             PluginNotFoundException{
-        
+
         try {
             Object repositorySession = getRepositorySession.invoke(session);
 
             BuildPluginManager pluginManager = env.getPluginManager();
 
-            return (PluginDescriptor) loadPlugin.invoke(pluginManager, plugin, env.getMavenProject()
-                    .getRemotePluginRepositories(), repositorySession);
+            List<RemoteRepository> repositories = null;
+            if ( session.getCurrentProject() != null ) {
+                repositories = session.getCurrentProject().getRemotePluginRepositories();
+            }
+            return (PluginDescriptor) loadPlugin.invoke(pluginManager, plugin, repositories, repositorySession);
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
         } catch (InvocationTargetException e) {

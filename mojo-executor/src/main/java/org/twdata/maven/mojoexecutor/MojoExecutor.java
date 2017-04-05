@@ -427,9 +427,6 @@ public class MojoExecutor {
         public ExecutionEnvironment(MavenProject mavenProject,
                                     MavenSession mavenSession,
                                     BuildPluginManager pluginManager) {
-            if (mavenProject == null) {
-                throw new NullPointerException("mavenProject may not be null");
-            }
             if (mavenSession == null) {
                 throw new NullPointerException("mavenSession may not be null");
             }

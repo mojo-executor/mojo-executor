@@ -29,6 +29,7 @@ import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeDiagnosingMatcher;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -182,6 +183,40 @@ public class MojoExecutorTest {
                 ),
                 executionEnvironment(
                         project,
+                        session,
+                        pluginManager
+                )
+        );
+        verify(pluginManager)
+                .executeMojo(
+                        same(session),
+                        argThat(is(equalTo(new MojoExecution(
+                                copyDependenciesMojoDescriptor,
+                                configuration(
+                                        element(name("outputDirectory"), "${project.build.directory}/foo")
+                                )
+                        ))))
+                );
+    }
+
+    @Test
+    public void executeMojoWithoutExecutionIdExecutesMojoWithExplicitConfigurationNoProject() throws Exception {
+
+        executeMojo(
+                plugin(
+                        groupId("org.apache.maven.plugins"),
+                        artifactId("maven-dependency-plugin"),
+                        version("2.0"),
+                        dependencies(
+                                dependency("org.apache.maven.plugins", "some-plugin", "1.0")
+                        )
+                ),
+                goal("copy-dependencies"),
+                configuration(
+                        element(name("outputDirectory"), "${project.build.directory}/foo")
+                ),
+                executionEnvironment(
+                        null,
                         session,
                         pluginManager
                 )

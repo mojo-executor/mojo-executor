@@ -84,6 +84,11 @@ public class MojoExecutorMojo extends AbstractMojo {
     private BuildPluginManager pluginManager;
 
     public void execute() throws MojoExecutionException {
+        if ( mavenProject.getArtifactId().equals( "mojo-executor-test-project-null-maven-project" ))
+        {
+            mavenProject = null;
+        }
+        getLog().info( "Executing with maven project " + mavenProject + " for session " + mavenSession );
         executeMojo(plugin, goal, toXpp3Dom(configuration),
                 executionEnvironment(mavenProject, mavenSession, pluginManager));
     }
