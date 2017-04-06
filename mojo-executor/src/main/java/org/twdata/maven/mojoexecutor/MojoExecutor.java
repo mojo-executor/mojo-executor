@@ -18,6 +18,7 @@ package org.twdata.maven.mojoexecutor;
 import org.apache.maven.execution.MavenSession;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Plugin;
+import org.apache.maven.model.PluginManagement;
 import org.apache.maven.plugin.BuildPluginManager;
 import org.apache.maven.plugin.MojoExecution;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -81,6 +82,23 @@ public class MojoExecutor {
             }
 
             MavenSession session = env.getMavenSession();
+
+            MavenProject currentProject = env.getMavenSession().getCurrentProject();
+            if ( ( plugin.getVersion() == null || plugin.getVersion().length() == 0 ) && currentProject != null )
+            {
+                PluginManagement pm = currentProject.getPluginManagement();
+                if ( pm != null )
+                {
+                    for ( Plugin p : pm.getPlugins() )
+                    {
+                        if ( plugin.getGroupId().equals( p.getGroupId() ) && plugin.getArtifactId().equals( p.getArtifactId() ) )
+                        {
+                            plugin.setVersion( p.getVersion() );
+                            break;
+                        }
+                    }
+                }
+            }
 
             PluginDescriptor pluginDescriptor = MavenCompatibilityHelper.loadPluginDescriptor(plugin, env, session);
             MojoDescriptor mojoDescriptor = pluginDescriptor.getMojo(goal);
