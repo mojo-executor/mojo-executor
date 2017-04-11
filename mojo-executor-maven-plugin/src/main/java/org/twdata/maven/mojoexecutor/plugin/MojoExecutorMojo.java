@@ -89,13 +89,12 @@ public class MojoExecutorMojo extends AbstractMojo {
      */
     private BuildPluginManager pluginManager;
 
-    public void execute() throws MojoExecutionException
-    {
+    public void execute() throws MojoExecutionException {
         integrationTestSetup();
 
-        getLog().info( "Executing with maven project " + mavenProject + " for session " + mavenSession );
-        executeMojo( plugin, goal, toXpp3Dom( configuration ),
-                     executionEnvironment( mavenProject, mavenSession, pluginManager ) );
+        getLog().info("Executing with maven project " + mavenProject + " for session " + mavenSession);
+        executeMojo(plugin, goal, toXpp3Dom(configuration),
+            executionEnvironment(mavenProject, mavenSession, pluginManager));
     }
 
     /**
@@ -103,33 +102,25 @@ public class MojoExecutorMojo extends AbstractMojo {
      *
      * @throws MojoExecutionException
      */
-    private void integrationTestSetup() throws MojoExecutionException
-    {
+    private void integrationTestSetup() throws MojoExecutionException {
         // Test specific conditionals...
-        if ( mavenProject.getArtifactId().equals( "mojo-executor-test-project-quiet" ) )
-        {
+        if (mavenProject.getArtifactId().equals("mojo-executor-test-project-quiet")) {
             // Maven < 3.1
             Logger logger;
-            try
-            {
-                logger = (Logger) FieldUtils.readField( getLog(), "logger", true );
+            try {
+                logger = (Logger) FieldUtils.readField(getLog(), "logger", true);
+            } catch (IllegalAccessException e) {
+                throw new MojoExecutionException("Unable to access logger field ", e);
             }
-            catch ( IllegalAccessException e )
-            {
-                throw new MojoExecutionException( "Unable to access logger field ", e );
-            }
-            logger.setThreshold( 5 );
+            logger.setThreshold(5);
 
             // Maven >= 3.1
             ILoggerFactory slf4jLoggerFactory = LoggerFactory.getILoggerFactory();
-            Slf4jConfiguration slf4jConfiguration = Slf4jConfigurationFactory.getConfiguration( slf4jLoggerFactory );
-            slf4jConfiguration.setRootLoggerLevel( Slf4jConfiguration.Level.ERROR);
+            Slf4jConfiguration slf4jConfiguration = Slf4jConfigurationFactory.getConfiguration(slf4jLoggerFactory);
+            slf4jConfiguration.setRootLoggerLevel(Slf4jConfiguration.Level.ERROR);
             slf4jConfiguration.activate();
-        }
-        else if ( mavenProject.getArtifactId().equals( "mojo-executor-test-project-null-maven-project" ) )
-        {
+        } else if (mavenProject.getArtifactId().equals("mojo-executor-test-project-null-maven-project")) {
             mavenProject = null;
         }
-
     }
 }
