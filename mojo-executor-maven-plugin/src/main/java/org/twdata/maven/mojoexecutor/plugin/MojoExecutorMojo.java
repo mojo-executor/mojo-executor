@@ -23,6 +23,11 @@ import org.apache.maven.model.Plugin;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.BuildPluginManager;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugins.annotations.Component;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
+import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration;
 import org.codehaus.plexus.logging.Logger;
@@ -35,92 +40,83 @@ import static org.twdata.maven.mojoexecutor.PlexusConfigurationUtils.toXpp3Dom;
 
 /**
  * Execute a Mojo using the MojoExecutor.
- *
- * @goal execute-mojo
- * @requiresDependencyResolution test
  */
+@Mojo( name = "execute-mojo", defaultPhase = LifecyclePhase.TEST, requiresDependencyResolution = ResolutionScope.TEST)
 public class MojoExecutorMojo extends AbstractMojo {
     /**
      * Plugin to execute.
-     *
-     * @parameter
-     * @required
      */
+    @Parameter (required = true)
     private Plugin plugin;
 
     /**
      * Plugin goal to execute.
-     *
-     * @parameter
-     * @required
      */
+    @Parameter (required = true)
     private String goal;
 
     /**
      * Plugin configuration to use in the execution.
-     *
-     * @parameter
      */
+    @Parameter
     private XmlPlexusConfiguration configuration;
 
     /**
      * The project currently being build.
-     *
-     * @parameter expression="${project}"
-     * @required
-     * @readonly
      */
+    @Parameter( defaultValue = "${project}", readonly = true )
     private MavenProject mavenProject;
 
     /**
      * The current Maven session.
-     *
-     * @parameter expression="${session}"
-     * @required
-     * @readonly
      */
+    @Component
     private MavenSession mavenSession;
 
     /**
      * The Maven BuildPluginManager component.
-     *
-     * @component
-     * @required
      */
+    @Component
     private BuildPluginManager pluginManager;
 
-    public void execute() throws MojoExecutionException {
-        integrationTestSetup();
-
-        getLog().info("Executing with maven project " + mavenProject + " for session " + mavenSession);
-        executeMojo(plugin, goal, toXpp3Dom(configuration),
-            executionEnvironment(mavenProject, mavenSession, pluginManager));
-    }
+    /**
+     * Disable logging on executed mojos
+     */
+    @Parameter ( defaultValue = "false")
+    private boolean quiet;
 
     /**
-     * Used purely to customise the setups for the integration tests.
-     *
-     * @throws MojoExecutionException
+     * Ignore injected maven projetc
      */
-    private void integrationTestSetup() throws MojoExecutionException {
-        // Test specific conditionals...
-        if (mavenProject.getArtifactId().equals("mojo-executor-test-project-quiet")) {
-            // Maven < 3.1
-            Logger logger;
-            try {
-                logger = (Logger) FieldUtils.readField(getLog(), "logger", true);
-            } catch (IllegalAccessException e) {
-                throw new MojoExecutionException("Unable to access logger field ", e);
-            }
-            logger.setThreshold(5);
+    @Parameter ( defaultValue = "false")
+    private boolean ignoreMavenProject;
 
-            // Maven >= 3.1
-            ILoggerFactory slf4jLoggerFactory = LoggerFactory.getILoggerFactory();
-            Slf4jConfiguration slf4jConfiguration = Slf4jConfigurationFactory.getConfiguration(slf4jLoggerFactory);
-            slf4jConfiguration.setRootLoggerLevel(Slf4jConfiguration.Level.ERROR);
-            slf4jConfiguration.activate();
-        } else if (mavenProject.getArtifactId().equals("mojo-executor-test-project-null-maven-project")) {
-            mavenProject = null;
+    public void execute() throws MojoExecutionException {
+
+        getLog().info("Executing with maven project " + mavenProject + " for session " + mavenSession);
+
+        if ( quiet )
+        {
+            disableLogging();
         }
+        executeMojo(plugin, goal, toXpp3Dom(configuration),
+            executionEnvironment( ( ignoreMavenProject ? null : mavenProject ), mavenSession, pluginManager));
+    }
+
+    private void disableLogging() throws MojoExecutionException {
+        // Maven < 3.1
+        Logger logger;
+        try {
+            logger = (Logger) FieldUtils.readField(getLog(), "logger", true);
+        } catch (IllegalAccessException e) {
+            throw new MojoExecutionException("Unable to access logger field ", e);
+        }
+        logger.setThreshold(5);
+
+        // Maven >= 3.1
+        ILoggerFactory slf4jLoggerFactory = LoggerFactory.getILoggerFactory();
+        Slf4jConfiguration slf4jConfiguration = Slf4jConfigurationFactory.getConfiguration(slf4jLoggerFactory);
+        slf4jConfiguration.setRootLoggerLevel(Slf4jConfiguration.Level.ERROR);
+        slf4jConfiguration.activate();
     }
 }

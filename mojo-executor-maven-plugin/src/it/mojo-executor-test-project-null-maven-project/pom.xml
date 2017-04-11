@@ -62,6 +62,7 @@
                             <goal>execute-mojo</goal>
                         </goals>
                         <configuration>
+                            <ignoreMavenProject>true</ignoreMavenProject>
                             <plugin>
                                 <groupId>org.apache.maven.plugins</groupId>
                                 <artifactId>maven-dependency-plugin</artifactId>
