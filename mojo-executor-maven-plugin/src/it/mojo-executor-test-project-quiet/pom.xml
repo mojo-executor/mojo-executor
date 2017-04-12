@@ -20,7 +20,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.twdata.maven</groupId>
-    <artifactId>mojo-executor-test-project-null-maven-project</artifactId>
+    <artifactId>mojo-executor-test-project-quiet</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <name>Mojo Executor - Test Project</name>
@@ -62,7 +62,7 @@
                             <goal>execute-mojo</goal>
                         </goals>
                         <configuration>
-                            <ignoreMavenProject>true</ignoreMavenProject>
+                            <quiet>true</quiet>
                             <plugin>
                                 <groupId>org.apache.maven.plugins</groupId>
                                 <artifactId>maven-dependency-plugin</artifactId>
