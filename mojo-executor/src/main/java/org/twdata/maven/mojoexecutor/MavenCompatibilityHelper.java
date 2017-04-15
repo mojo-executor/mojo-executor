@@ -19,10 +19,13 @@ import org.apache.maven.execution.MavenSession;
 import org.apache.maven.model.Plugin;
 import org.apache.maven.plugin.BuildPluginManager;
 import org.apache.maven.plugin.InvalidPluginDescriptorException;
+import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.PluginDescriptorParsingException;
 import org.apache.maven.plugin.PluginNotFoundException;
 import org.apache.maven.plugin.PluginResolutionException;
 import org.apache.maven.plugin.descriptor.PluginDescriptor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.sonatype.aether.repository.RemoteRepository;
 import org.twdata.maven.mojoexecutor.MojoExecutor.ExecutionEnvironment;
 
@@ -35,6 +38,9 @@ import java.util.List;
  *
  */
 public class MavenCompatibilityHelper {
+
+    private static final Logger logger = LoggerFactory.getLogger( MavenCompatibilityHelper.class );
+
     private static Method getRepositorySession;
     private static Method loadPlugin;
 
@@ -64,8 +70,8 @@ public class MavenCompatibilityHelper {
     }
 
     public static PluginDescriptor loadPluginDescriptor(Plugin plugin, ExecutionEnvironment env, MavenSession session)
-            throws PluginResolutionException, PluginDescriptorParsingException, InvalidPluginDescriptorException,
-            PluginNotFoundException{
+        throws PluginResolutionException, PluginDescriptorParsingException, InvalidPluginDescriptorException,
+        PluginNotFoundException, MojoExecutionException {
 
         try {
             Object repositorySession = getRepositorySession.invoke(session);
@@ -76,12 +82,24 @@ public class MavenCompatibilityHelper {
             if ( session.getCurrentProject() != null ) {
                 repositories = session.getCurrentProject().getRemotePluginRepositories();
             }
+            logger.debug("Attempting to load plugin {} using pluginManager {} and repositories {}", plugin, pluginManager, repositories);
             return (PluginDescriptor) loadPlugin.invoke(pluginManager, plugin, repositories, repositorySession);
         } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
+            throw new MojoExecutionException("Unable to access plugin", e);
         } catch (InvocationTargetException e) {
-            throw new RuntimeException(e);
+            logger.debug("Unable to invoke plugin", e.getCause());
+            // Unwrap the exception to throw the correct type.
+            if (e.getCause() instanceof PluginNotFoundException) {
+                throw ((PluginNotFoundException) e.getCause());
+            } else if (e.getCause() instanceof PluginResolutionException) {
+                throw ((PluginResolutionException) e.getCause());
+            } else if (e.getCause() instanceof PluginDescriptorParsingException) {
+                throw ((PluginDescriptorParsingException) e.getCause());
+            } else if (e.getCause() instanceof InvalidPluginDescriptorException) {
+                throw ((InvalidPluginDescriptorException) e.getCause());
+            } else {
+                throw new MojoExecutionException("Unable to invoke plugin", e.getCause());
+            }
         }
     }
-
 }

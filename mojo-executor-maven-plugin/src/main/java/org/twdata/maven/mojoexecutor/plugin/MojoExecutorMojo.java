@@ -70,7 +70,7 @@ public class MojoExecutorMojo extends AbstractMojo {
     /**
      * The current Maven session.
      */
-    @Component
+    @Parameter( defaultValue = "${session}", readonly = true )
     private MavenSession mavenSession;
 
     /**
