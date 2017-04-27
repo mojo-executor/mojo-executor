@@ -62,7 +62,7 @@
                             <goal>execute-mojo</goal>
                         </goals>
                         <configuration>
-                            <quiet>true</quiet>
+                            <quiet>${quiet}</quiet>
                             <plugin>
                                 <groupId>org.apache.maven.plugins</groupId>
                                 <artifactId>maven-dependency-plugin</artifactId>
