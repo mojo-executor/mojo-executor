@@ -164,6 +164,20 @@ public class MojoExecutor {
     }
 
     /**
+     * Constructs the {@link ExecutionEnvironment} instance fluently
+     *
+     * @param mavenSession  The current Maven session
+     * @param pluginManager The Build plugin manager
+     * @return The execution environment
+     * @throws NullPointerException if mavenProject, mavenSession or pluginManager
+     *                              are null
+     */
+    public static ExecutionEnvironment executionEnvironment(MavenSession mavenSession,
+        BuildPluginManager pluginManager) {
+        return new ExecutionEnvironment(mavenSession, pluginManager);
+    }
+
+    /**
      * Builds the configuration for the goal using Elements
      *
      * @param elements A list of elements for the configuration section
@@ -476,6 +490,11 @@ public class MojoExecutor {
             this.mavenProject = mavenProject;
             this.mavenSession = mavenSession;
             this.pluginManager = pluginManager;
+        }
+
+        public ExecutionEnvironment(MavenSession mavenSession,
+            BuildPluginManager pluginManager) {
+            this ( null, mavenSession, pluginManager);
         }
 
         public MavenProject getMavenProject() {
