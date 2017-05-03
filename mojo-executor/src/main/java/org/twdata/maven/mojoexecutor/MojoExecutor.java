@@ -20,13 +20,22 @@ import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Plugin;
 import org.apache.maven.model.PluginManagement;
 import org.apache.maven.plugin.BuildPluginManager;
+import org.apache.maven.plugin.InvalidPluginDescriptorException;
 import org.apache.maven.plugin.MojoExecution;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugin.PluginConfigurationException;
+import org.apache.maven.plugin.PluginDescriptorParsingException;
+import org.apache.maven.plugin.PluginManagerException;
+import org.apache.maven.plugin.PluginNotFoundException;
+import org.apache.maven.plugin.PluginResolutionException;
 import org.apache.maven.plugin.descriptor.MojoDescriptor;
 import org.apache.maven.plugin.descriptor.PluginDescriptor;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.codehaus.plexus.util.xml.Xpp3DomUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -59,7 +68,10 @@ import static org.twdata.maven.mojoexecutor.PlexusConfigurationUtils.toXpp3Dom;
  * </pre>
  */
 public class MojoExecutor {
-    /**
+
+    private static final Logger logger = LoggerFactory.getLogger( MojoExecutor.class );
+
+   /**
      * Entry point for executing a mojo
      *
      * @param plugin        The plugin to execute
@@ -70,6 +82,7 @@ public class MojoExecutor {
      */
     public static void executeMojo(Plugin plugin, String goal, Xpp3Dom configuration, ExecutionEnvironment env)
             throws MojoExecutionException {
+        logger.debug("Running executeMojo for {}", plugin);
         if (configuration == null) {
             throw new NullPointerException("configuration may not be null");
         }
@@ -84,16 +97,12 @@ public class MojoExecutor {
             MavenSession session = env.getMavenSession();
 
             MavenProject currentProject = env.getMavenSession().getCurrentProject();
-            if ( ( plugin.getVersion() == null || plugin.getVersion().length() == 0 ) && currentProject != null )
-            {
+            if ((plugin.getVersion() == null || plugin.getVersion().length() == 0) && currentProject != null) {
                 PluginManagement pm = currentProject.getPluginManagement();
-                if ( pm != null )
-                {
-                    for ( Plugin p : pm.getPlugins() )
-                    {
-                        if ( plugin.getGroupId().equals( p.getGroupId() ) && plugin.getArtifactId().equals( p.getArtifactId() ) )
-                        {
-                            plugin.setVersion( p.getVersion() );
+                if (pm != null) {
+                    for (Plugin p : pm.getPlugins()) {
+                        if (plugin.getGroupId().equals(p.getGroupId()) && plugin.getArtifactId().equals(p.getArtifactId())) {
+                            plugin.setVersion(p.getVersion());
                             break;
                         }
                     }
@@ -104,13 +113,26 @@ public class MojoExecutor {
             MojoDescriptor mojoDescriptor = pluginDescriptor.getMojo(goal);
             if (mojoDescriptor == null) {
                 throw new MojoExecutionException("Could not find goal '" + goal + "' in plugin "
-                        + plugin.getGroupId() + ":"
-                        + plugin.getArtifactId() + ":"
-                        + plugin.getVersion());
+                    + plugin.getGroupId() + ":"
+                    + plugin.getArtifactId() + ":"
+                    + plugin.getVersion());
             }
             MojoExecution exec = mojoExecution(mojoDescriptor, executionId, configuration);
             env.getPluginManager().executeMojo(session, exec);
-        } catch (Exception e) {
+        // TODO : Consider using JDK7 multi-catch
+        } catch (PluginConfigurationException e) {
+            throw new MojoExecutionException("Unable to execute mojo", e);
+        } catch (PluginNotFoundException e) {
+            throw new MojoExecutionException("Unable to execute mojo", e);
+        } catch (InvalidPluginDescriptorException e) {
+            throw new MojoExecutionException("Unable to execute mojo", e);
+        } catch (PluginManagerException e) {
+            throw new MojoExecutionException("Unable to execute mojo", e);
+        } catch (PluginDescriptorParsingException e) {
+            throw new MojoExecutionException("Unable to execute mojo", e);
+        } catch (MojoFailureException e) {
+            throw new MojoExecutionException("Unable to execute mojo", e);
+        } catch (PluginResolutionException e) {
             throw new MojoExecutionException("Unable to execute mojo", e);
         }
     }
