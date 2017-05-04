@@ -74,6 +74,13 @@ private MavenSession mavenSession;
 private BuildPluginManager pluginManager;
 ```
 
+An alternative form for the executionEnvironment, ignoring the optional MavenProject, is: 
+```
+    executionEnvironment(
+        mavenSession,
+        pluginManager
+    )
+```
 You might need to add other annotations to your Mojo class, depending on the needs of your plugin. Annotations declared by Mojos that you execute are _not_ automatically inherited by your enclosing Mojo.
 
 For example, if you are using the `maven-dependency-plugin`, as in this example, you will need to add `@requiresDependencyResolution <scope>` to your class annotations to ensure that Maven resolves the project dependencies before invoking your plugin.

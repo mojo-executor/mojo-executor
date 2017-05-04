@@ -100,7 +100,9 @@ public class MojoExecutorMojo extends AbstractMojo {
             disableLogging();
         }
         executeMojo(plugin, goal, toXpp3Dom(configuration),
-            executionEnvironment( ( ignoreMavenProject ? null : mavenProject ), mavenSession, pluginManager));
+            (ignoreMavenProject ?
+                executionEnvironment( mavenSession, pluginManager) :
+                executionEnvironment( mavenProject, mavenSession, pluginManager)));
     }
 
     private void disableLogging() throws MojoExecutionException {
