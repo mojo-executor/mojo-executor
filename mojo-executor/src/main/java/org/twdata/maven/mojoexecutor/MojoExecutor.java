@@ -44,10 +44,8 @@ import java.util.List;
 import static org.twdata.maven.mojoexecutor.PlexusConfigurationUtils.toXpp3Dom;
 
 /**
- * Executes an arbitrary mojo using a fluent interface.  This is meant to be executed within the context of a Maven 2
- * mojo.
- * <p/>
- * Here is an execution that invokes the dependency plugin:
+ * Executes an arbitrary mojo using a fluent interface.  This is meant to be executed within the context of a Maven mojo. Here is an
+ * execution that invokes the dependency plugin:
  * <pre>
  * executeMojo(
  *              plugin(
