@@ -13,12 +13,13 @@ I do want to make it clear, however, that I won't be personally working on any b
 
 If anyone in the community would like to take over as full-time maintainer, let's talk! Email me at tmoore@incrementalism.net and we can set up a Skype call or Google Hangout to discuss it in detail.
 
-Cheers,  
+Cheers,
 &mdash; Tim
 
 News
 ====
 
+-  4 May 2017 &mdash; Mojo Executor 2.3.0 released (by Nick Cross) with various bug fixes and minor improvements.
 - 27 Mar 2014 &mdash; Mojo Executor 1.5.2 released with support for Maven 2 through 3.1.
 - 12 Feb 2014 &mdash; I'm looking for a new maintainer for this project. If you're interested, please get in touch!
 - 26 Nov 2013 &mdash; Mojo Executor 2.2.0 released with support for attributes in plugin configuration.
@@ -74,7 +75,7 @@ private MavenSession mavenSession;
 private BuildPluginManager pluginManager;
 ```
 
-An alternative form for the executionEnvironment, ignoring the optional MavenProject, is: 
+An alternative form for the executionEnvironment, ignoring the optional MavenProject, is:
 ```
     executionEnvironment(
         mavenSession,
