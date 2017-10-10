@@ -26,4 +26,9 @@ env:
     - MAVEN=$PWD/apache-maven-3.5.0
 
 install: /bin/true
-script: export M2_HOME=$MAVEN ; export PATH=$M2_HOME/bin:$PATH ; mvn --version ; mvn clean install
+script:
+  - echo $JAVA_HOME
+  - export M2_HOME=$MAVEN
+  - export PATH=$M2_HOME/bin:$PATH
+  - mvn --version
+  - mvn clean install
