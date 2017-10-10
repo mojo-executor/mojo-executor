@@ -32,3 +32,5 @@ script:
   - export PATH=$M2_HOME/bin:$PATH
   - mvn --version
   - mvn clean install
+
+after_success: bash <(curl -s https://codecov.io/bash) -t repository-upload-token at the end of your CI build
