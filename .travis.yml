@@ -7,7 +7,7 @@ language: java
 #  - '3.5.0'
 
 jdk:
-  - oraclejdk7
+  - oraclejdk8
 
 # cache local Maven repo: http://docs.travis-ci.com/user/caching/
 cache:
@@ -26,4 +26,11 @@ env:
     - MAVEN=$PWD/apache-maven-3.5.0
 
 install: /bin/true
-script: export M2_HOME=$MAVEN ; export PATH=$M2_HOME/bin:$PATH ; mvn --version ; mvn clean install
+script:
+  - echo $JAVA_HOME
+  - export M2_HOME=$MAVEN
+  - export PATH=$M2_HOME/bin:$PATH
+  - mvn --version
+  - mvn clean install
+
+after_success: bash <(curl -s https://codecov.io/bash)
