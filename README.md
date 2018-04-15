@@ -98,7 +98,7 @@ Add this to your pom.xml:
     <dependency>
         <groupId>org.twdata.maven</groupId>
         <artifactId>mojo-executor</artifactId>
-        <version>2.2.0</version>
+        <version>2.3.0</version>
     </dependency>
 </dependencies>
 ```
