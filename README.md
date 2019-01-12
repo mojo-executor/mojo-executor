@@ -5,7 +5,7 @@ The Mojo Executor provides a way to to execute other Mojos (plugins) within a Ma
 Note from the Maintainer
 ========================
 
-I'm no longer maintaning this project actively, as I no longer use it (and have moved away from Maven and Java entirely). It's a simple library that does its job, and a lot of people are using it effectively in its current state.
+I'm no longer maintaining this project actively, as I no longer use it (and have moved away from Maven and Java entirely). It's a simple library that does its job, and a lot of people are using it effectively in its current state.
 
 I am happy to continue reviewing and merging pull requests, and releasing new versions to Maven Central. Most of the contributions so far have come from other people, and I'm very grateful to the people that have helped to improve Mojo Executor.
 
