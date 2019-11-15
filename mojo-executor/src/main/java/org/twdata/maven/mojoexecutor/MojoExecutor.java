@@ -65,6 +65,7 @@ import static org.twdata.maven.mojoexecutor.PlexusConfigurationUtils.toXpp3Dom;
  *          );
  * </pre>
  */
+@SuppressWarnings("WeakerAccess")
 public class MojoExecutor {
 
     private static final Logger logger = LoggerFactory.getLogger( MojoExecutor.class );
@@ -117,20 +118,7 @@ public class MojoExecutor {
             }
             MojoExecution exec = mojoExecution(mojoDescriptor, executionId, configuration);
             env.getPluginManager().executeMojo(session, exec);
-        // TODO : Consider using JDK7 multi-catch
-        } catch (PluginConfigurationException e) {
-            throw new MojoExecutionException("Unable to execute mojo", e);
-        } catch (PluginNotFoundException e) {
-            throw new MojoExecutionException("Unable to execute mojo", e);
-        } catch (InvalidPluginDescriptorException e) {
-            throw new MojoExecutionException("Unable to execute mojo", e);
-        } catch (PluginManagerException e) {
-            throw new MojoExecutionException("Unable to execute mojo", e);
-        } catch (PluginDescriptorParsingException e) {
-            throw new MojoExecutionException("Unable to execute mojo", e);
-        } catch (MojoFailureException e) {
-            throw new MojoExecutionException("Unable to execute mojo", e);
-        } catch (PluginResolutionException e) {
+        } catch (PluginConfigurationException | PluginNotFoundException | InvalidPluginDescriptorException | PluginManagerException | PluginDescriptorParsingException | MojoFailureException | PluginResolutionException e) {
             throw new MojoExecutionException("Unable to execute mojo", e);
         }
     }
@@ -209,7 +197,7 @@ public class MojoExecutor {
      * @return The plugin instance
      */
     public static Plugin plugin(String groupId, String artifactId, String version) {
-        return plugin(groupId, artifactId, version, Collections.<Dependency>emptyList());
+        return plugin(groupId, artifactId, version, Collections.emptyList());
     }
 
     /**
