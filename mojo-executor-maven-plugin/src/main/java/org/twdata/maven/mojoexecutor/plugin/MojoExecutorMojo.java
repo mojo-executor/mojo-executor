@@ -41,6 +41,7 @@ import static org.twdata.maven.mojoexecutor.PlexusConfigurationUtils.toXpp3Dom;
 /**
  * Execute a Mojo using the MojoExecutor.
  */
+@SuppressWarnings("unused")
 @Mojo( name = "execute-mojo", defaultPhase = LifecyclePhase.TEST, requiresDependencyResolution = ResolutionScope.TEST)
 public class MojoExecutorMojo extends AbstractMojo {
     /**
