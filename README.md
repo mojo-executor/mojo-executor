@@ -2,8 +2,12 @@
 
 The Mojo Executor provides a way to to execute other Mojos (plugins) within a Maven plugin, allowing you to easily create Maven plugins that are composed of other plugins.
 
-Note from the Maintainer
-========================
+Note from the Maintainers
+=========================
+
+
+Tim Moore
+---------
 
 I'm no longer maintaining this project actively, as I no longer use it (and have moved away from Maven and Java entirely). It's a simple library that does its job, and a lot of people are using it effectively in its current state.
 
@@ -15,6 +19,17 @@ If anyone in the community would like to take over as full-time maintainer, let'
 
 Cheers,
 &mdash; Tim
+
+
+Nick Cross
+----------
+
+While I am no longer actively using this plugin I am happy to review, assist with contributions, merge PRs and release new versions. I have released the last two versions (2.3.0/2.3.1) rolling up all the various fixes and improvements.
+
+Cheers,
+&mdash; Nick
+
+
 
 News
 ====
