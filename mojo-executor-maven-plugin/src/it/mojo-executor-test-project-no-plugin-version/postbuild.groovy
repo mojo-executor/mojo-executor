@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 File buildLog = new File((String) basedir, "build.log")
-return buildLog.getText().contains("""
+def text = buildLog.getText()
+text = text.replaceAll("\r\n", "\n")
+return text.contains("""
 [INFO] The following files have been resolved:
 [INFO]    junit:junit:jar:4.11:test
 [INFO]    org.hamcrest:hamcrest-core:jar:1.3:test
