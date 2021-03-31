@@ -44,9 +44,9 @@ News
 Downloads
 =========
 
-You can download the jars, source, and javadocs from Maven central:
+You can download the JARs, source, and Javadocs from Maven central:
 
-http://repo2.maven.org/maven2/org/twdata/maven/mojo-executor/
+https://search.maven.org/search?q=g:org.twdata.maven
 
 Example Usage
 =============
