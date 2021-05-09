@@ -2,9 +2,6 @@
 sudo: false
 
 language: java
-#maven:
-#  - '3.0.5'
-#  - '3.5.0'
 
 jdk:
   - openjdk8
@@ -15,14 +12,14 @@ cache:
      - '$HOME/.m2/repository'
 
 before_install:
-  - wget https://archive.apache.org/dist/maven/maven-3/3.0.5/binaries/apache-maven-3.0.5-bin.zip
-  - unzip -q apache-maven-3.0.5-bin.zip
+  - wget https://archive.apache.org/dist/maven/maven-3/3.2.5/binaries/apache-maven-3.2.5-bin.zip
+  - unzip -q apache-maven-3.2.5-bin.zip
   - wget https://archive.apache.org/dist/maven/maven-3/3.5.0/binaries/apache-maven-3.5.0-bin.zip
   - unzip -q apache-maven-3.5.0-bin.zip
 
 env:
   matrix:
-    - MAVEN=$PWD/apache-maven-3.0.5
+    - MAVEN=$PWD/apache-maven-3.2.5
     - MAVEN=$PWD/apache-maven-3.5.0
 
 install: /bin/true
