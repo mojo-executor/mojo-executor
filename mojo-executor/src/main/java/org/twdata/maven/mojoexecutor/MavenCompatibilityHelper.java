@@ -34,7 +34,7 @@ import java.lang.reflect.Method;
 import java.util.List;
 
 /**
- * The <tt>MavenCompatibilityHelper</tt> hides incompatibilities between Maven versions
+ * The {@code MavenCompatibilityHelper} hides incompatibilities between Maven versions
  *
  */
 public class MavenCompatibilityHelper {

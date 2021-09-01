@@ -25,7 +25,7 @@ Cheers,
 Nick Cross
 ----------
 
-While I am no longer actively using this plugin I am happy to review, assist with contributions, merge PRs and release new versions. I have released the last two versions (2.3.0/2.3.1) rolling up all the various fixes and improvements.
+While I am no longer actively using this plugin I am happy to review, assist with contributions, merge PRs and release new versions. I have released the last few versions rolling up all the various fixes and improvements.
 
 Cheers,
 &mdash; Nick
@@ -35,6 +35,8 @@ Cheers,
 News
 ====
 
+*  1 Sep 2021 &mdash; Mojo Executor 2.3.2 released (by Nick Cross) with various bug fixes and minor improvements
+* 21 Nov 2019 &mdash; Mojo Executor 2.3.1 released (by Nick Cross) with various bug fixes and minor improvements
 -  4 May 2017 &mdash; Mojo Executor 2.3.0 released (by Nick Cross) with various bug fixes and minor improvements.
 - 27 Mar 2014 &mdash; Mojo Executor 1.5.2 released with support for Maven 2 through 3.1.
 - 12 Feb 2014 &mdash; I'm looking for a new maintainer for this project. If you're interested, please get in touch!
@@ -142,7 +144,7 @@ Contributors
 
 Mojo Executor was originally created by [Don Brown][mrdon] (mrdon@twdata.org).
 
-It is currently maintained by [Tim Moore][TimMoore] (tmoore@incrementalism.net).
+It is currently maintained by [Tim Moore][TimMoore] (tmoore@incrementalism.net) and [Nick Cross][rnc] (ncross@redhat.com)
 
 Thanks to the following contributors, who have provided patches and other assistance:
 
@@ -154,6 +156,7 @@ Thanks to the following contributors, who have provided patches and other assist
 -   [msavelyev][msavelyev] &amp; [Ivan Dyachenko][ivan-dyachenko] &mdash; support for attributes in Mojo configuration
 -   [Christof Schoell][cschoell] &mdash; Maven 3.1 support in the 1.5.x branch
 
+[rnc]: https://github.com/rnc
 [mrdon]: https://github.com/mrdon
 [TimMoore]: https://github.com/TimMoore/
 [matthewmccullough]: https://github.com/matthewmccullough
