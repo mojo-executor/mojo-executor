@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/TimMoore/mojo-executor.svg?branch=master)](https://travis-ci.org/TimMoore/mojo-executor)
+![Build Status](https://github.com/TimMoore/mojo-executor/actions/workflows/maven.yml/badge.svg)](https://github.com/TimMoore/mojo-executor/actions/workflows/maven.yml)
 [![Maven Central](https://img.shields.io/maven-central/v/org.twdata.maven/mojo-executor)](https://search.maven.org/artifact/org.twdata.maven/mojo-executor)
 
 The Mojo Executor provides a way to to execute other Mojos (plugins) within a Maven plugin, allowing you to easily create Maven plugins that are composed of other plugins.
