@@ -33,7 +33,7 @@
     The Mojo Executor provides a way to to execute other Mojos (plugins) within a Maven plugin, allowing you to
     easily create Maven plugins that are composed of other plugins.
   </description>
-  <url>http://timmoore.github.com/mojo-executor/</url>
+  <url>https://mojo-executor.github.io/mojo-executor/</url>
   <inceptionYear>2008</inceptionYear>
   <licenses>
     <license>
@@ -101,14 +101,14 @@
   </modules>
 
   <scm>
-    <connection>scm:git:git://github.com/TimMoore/mojo-executor.git</connection>
-    <developerConnection>scm:git:ssh://git@github.com/TimMoore/mojo-executor.git</developerConnection>
-    <url>https://github.com/TimMoore/mojo-executor</url>
+    <connection>scm:git:https://github.com/mojo-executor/mojo-executor.git</connection>
+    <developerConnection>scm:git:ssh://git@github.com/mojo-executor/mojo-executor.git</developerConnection>
+    <url>https://github.com/mojo-executor/mojo-executor</url>
     <tag>HEAD</tag>
   </scm>
   <issueManagement>
     <system>GitHub</system>
-    <url>https://github.com/TimMoore/mojo-executor/issues</url>
+    <url>https://github.com/mojo-executor/mojo-executor/issues</url>
   </issueManagement>
 
   <properties>
