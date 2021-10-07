@@ -16,7 +16,7 @@ jobs:
       matrix:
         maven: [3.2.5, 3.5.4, 3.6.3, 3.8.1]
     # https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions#jobsjob_idif
-    if: github.repository == 'TimMoore/mojo-executor' && github.event_name == 'pull_request'
+    if: github.repository == 'mojo-executor/mojo-executor' && github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -44,7 +44,7 @@ jobs:
       uses: codecov/codecov-action@v1
 
   snapshot:
-    if: github.repository == 'TimMoore/mojo-executor' && github.event_name == 'push' && github.ref == 'refs/heads/master'
+    if: github.repository == 'mojo-executor/mojo-executor' && github.event_name == 'push' && github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
