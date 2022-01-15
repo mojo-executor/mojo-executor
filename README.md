@@ -149,7 +149,7 @@ It is currently maintained by [Tim Moore][TimMoore] (tmoore@incrementalism.net) 
 Thanks to the following contributors, who have provided patches and other assistance:
 
 -   [Matthew McCullough][matthewmccullough]
--   Gili Tzabari (cowwoc@bbs.darktech.org) &mdash; Maven 3 support
+-   [Gili Tzabari][cowwoc] &mdash; Maven 3 support
 -   [Joseph Walton][josephw] &mdash; support for both Maven 2 and Maven 3 in the same artifact
 -   [Olivier Lamy][olamy] &amp; [Robert Munteanu][rombert] &mdash; Maven 3.1 support
 -   [Jelmer Kuperus][jelmerk] &mdash; support for plugin dependencies
@@ -167,5 +167,6 @@ Thanks to the following contributors, who have provided patches and other assist
 [msavelyev]: https://github.com/msavelyev
 [ivan-dyachenko]: https://github.com/ivan-dyachenko
 [cschoell]: https://github.com/cschoell
+[cowwoc]: https://github.com/cowwoc
 
 [mojo-api]: http://maven.apache.org/developers/mojo-api-specification.html
