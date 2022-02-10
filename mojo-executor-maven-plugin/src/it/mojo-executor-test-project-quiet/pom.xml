@@ -32,13 +32,13 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>1.7.4</version>
+            <version>1.7.36</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-nop</artifactId>
-            <version>1.7.4</version>
+            <version>1.7.36</version>
             <scope>runtime</scope>
         </dependency>
         <dependency>

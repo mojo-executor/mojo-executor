@@ -20,6 +20,6 @@ def v1 = text.contains("[INFO] Executing 'org.apache.maven.plugins:maven-depende
 def v2 = text.contains("""[INFO] The following files have been resolved:
 [INFO]    junit:junit:jar:4.11:test
 [INFO]    org.hamcrest:hamcrest-core:jar:1.3:test
-[INFO]    org.slf4j:slf4j-api:jar:1.7.4:provided
-[INFO]    org.slf4j:slf4j-nop:jar:1.7.4:runtime""");
+[INFO]    org.slf4j:slf4j-api:jar:1.7.36:provided
+[INFO]    org.slf4j:slf4j-nop:jar:1.7.36:runtime""");
 return v1 && v2;
