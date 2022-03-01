@@ -113,11 +113,13 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.version>3.8.4</maven.version>
+    <maven.version>3.3.1</maven.version><!-- this is the minimum Maven distribution being supported -->
   </properties>
 
   <dependencyManagement>
     <dependencies>
+      <!-- dependencies exposed from the Maven Core classloader (https://maven.apache.org/guides/mini/guide-maven-classloading.html#2-core-classloader)
+           exported via https://github.com/apache/maven/blob/maven-3.3.1/maven-core/src/main/resources/META-INF/maven/extension.xml -->
       <dependency>
         <groupId>org.apache.maven</groupId>
         <artifactId>maven</artifactId>
@@ -138,12 +140,22 @@
       <dependency>
         <groupId>org.apache.maven</groupId>
         <artifactId>maven-embedder</artifactId>
-        <version>3.8.4</version>
+        <version>${maven.version}</version>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus</groupId>
         <artifactId>plexus-utils</artifactId>
-        <version>3.4.1</version>
+        <version>3.0.20</version><!-- must match version exported from Maven: https://github.com/apache/maven/blob/cab6659f9874fa96462afef40fcf6bc033d58c1c/pom.xml#L52 -->
+      </dependency>
+      <dependency>
+        <groupId>org.eclipse.sisu</groupId>
+        <artifactId>org.eclipse.sisu.plexus</artifactId>
+        <version>0.3.0</version><!-- must match version exported from Maven: https://github.com/apache/maven/blob/cab6659f9874fa96462afef40fcf6bc033d58c1c/pom.xml#L56 -->
+      </dependency>
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-api</artifactId>
+        <version>1.7.5</version><!-- must match version exported from Maven: https://github.com/apache/maven/blob/cab6659f9874fa96462afef40fcf6bc033d58c1c/pom.xml#L63 -->
       </dependency>
 
       <dependency>
@@ -170,19 +182,14 @@
         <scope>test</scope>
       </dependency>
       <dependency>
-        <groupId>commons-lang</groupId>
-        <artifactId>commons-lang</artifactId>
-        <version>2.6</version>
-      </dependency>
-      <dependency>
-        <groupId>org.slf4j</groupId>
-        <artifactId>slf4j-api</artifactId>
-        <version>1.7.36</version>
+        <groupId>org.apache.commons</groupId>
+        <artifactId>commons-lang3</artifactId>
+        <version>3.12.0</version>
       </dependency>
       <dependency>
         <groupId>org.slf4j</groupId>
         <artifactId>slf4j-simple</artifactId>
-        <version>1.7.36</version>
+        <version>1.7.5</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
