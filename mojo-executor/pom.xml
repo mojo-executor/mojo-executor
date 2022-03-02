@@ -52,11 +52,6 @@
         <dependency>
             <groupId>org.codehaus.plexus</groupId>
             <artifactId>plexus-utils</artifactId>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.codehaus.plexus</groupId>
-            <artifactId>plexus-utils</artifactId>
             <scope>compile</scope><!-- use compile scope due to https://issues.apache.org/jira/browse/MNG-6965  -->
         </dependency>
         <dependency>
