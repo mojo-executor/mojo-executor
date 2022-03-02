@@ -5,9 +5,9 @@ name: CI
 
 on:
   push:
-    branches: master
+    branches: main
   pull_request:
-    branches: master
+    branches: main
 
 jobs:
   build:
@@ -44,7 +44,7 @@ jobs:
       uses: codecov/codecov-action@v1
 
   snapshot:
-    if: github.repository == 'mojo-executor/mojo-executor' && github.event_name == 'push' && github.ref == 'refs/heads/master'
+    if: github.repository == 'mojo-executor/mojo-executor' && github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
