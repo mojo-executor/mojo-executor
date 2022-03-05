@@ -34,6 +34,9 @@
         testing purposes.
     </description>
 
+    <prerequisites>
+        <maven>${maven.version}</maven>
+    </prerequisites>
     <dependencies>
         <dependency>
             <groupId>org.apache.maven</groupId>
@@ -56,25 +59,32 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+            <groupId>org.apache.maven</groupId>
+            <artifactId>maven-embedder</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>org.codehaus.plexus</groupId>
             <artifactId>plexus-utils</artifactId>
+            <scope>compile</scope><!-- use compile scope due to https://issues.apache.org/jira/browse/MNG-6965  -->
+        </dependency>
+        <dependency>
+            <groupId>org.eclipse.sisu</groupId>
+            <artifactId>org.eclipse.sisu.plexus</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>mojo-executor</artifactId>
         </dependency>
         <dependency>
-            <groupId>commons-lang</groupId>
-            <artifactId>commons-lang</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.maven</groupId>
-            <artifactId>maven-embedder</artifactId>
-            <scope>provided</scope>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
         </dependency>
     </dependencies>
 
@@ -101,6 +111,7 @@
                     <cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
                     <localRepositoryPath>${project.build.directory}/it-repo</localRepositoryPath>
                     <settingsFile>src/it/settings.xml</settingsFile>
+                    <streamLogsOnFailures>true</streamLogsOnFailures>
                 </configuration>
                 <executions>
                     <execution>
