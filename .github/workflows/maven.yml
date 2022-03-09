@@ -72,6 +72,6 @@ jobs:
                 "password": "${{ secrets.SONATYPE_PASSWORD }}"
             }]
     - name: Deploy Snapshot
-      run: mvn -B -V org.apache.maven.plugins:maven-source-plugin:jar-no-fork deploy
+      run: mvn -B -V -Dmaven.deploy.skip=releases org.apache.maven.plugins:maven-source-plugin:jar-no-fork deploy
     - name: Codecov
       uses: codecov/codecov-action@v1
