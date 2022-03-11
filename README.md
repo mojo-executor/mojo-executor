@@ -1,7 +1,7 @@
 [![Build Status](https://github.com/mojo-executor/mojo-executor/actions/workflows/maven.yml/badge.svg)](https://github.com/mojo-executor/mojo-executor/actions/workflows/maven.yml)
 [![Maven Central](https://img.shields.io/maven-central/v/org.twdata.maven/mojo-executor)](https://search.maven.org/artifact/org.twdata.maven/mojo-executor)
 
-The Mojo Executor provides a way to to execute other Mojos (plugins) within a Maven plugin, allowing you to easily create Maven plugins that are composed of other plugins.
+The Mojo Executor provides a way to execute other Mojos (plugins) within a Maven plugin, allowing you to easily create Maven plugins that are composed of other plugins.
 
 Note from the Maintainers
 =========================
@@ -35,8 +35,10 @@ Cheers,
 News
 ====
 
-*  1 Sep 2021 &mdash; Mojo Executor 2.3.2 released (by Nick Cross) with various bug fixes and minor improvements
-* 21 Nov 2019 &mdash; Mojo Executor 2.3.1 released (by Nick Cross) with various bug fixes and minor improvements
+- 10 Mar 2022 &mdash; [Mojo Executor 2.4.0](https://github.com/mojo-executor/mojo-executor/releases/tag/mojo-executor-parent-2.4.0) released
+- 10 Feb 2022 &mdash; Mojo Executor 2.3.3 released with updated dependencies
+-  1 Sep 2021 &mdash; Mojo Executor 2.3.2 released (by Nick Cross) with various bug fixes and minor improvements
+- 21 Nov 2019 &mdash; Mojo Executor 2.3.1 released (by Nick Cross) with various bug fixes and minor improvements
 -  4 May 2017 &mdash; Mojo Executor 2.3.0 released (by Nick Cross) with various bug fixes and minor improvements.
 - 27 Mar 2014 &mdash; Mojo Executor 1.5.2 released with support for Maven 2 through 3.1.
 - 12 Feb 2014 &mdash; I'm looking for a new maintainer for this project. If you're interested, please get in touch!
@@ -116,17 +118,20 @@ Add this to your pom.xml:
     <dependency>
         <groupId>org.twdata.maven</groupId>
         <artifactId>mojo-executor</artifactId>
-        <version>2.3.3</version>
+        <version>2.4.0</version>
     </dependency>
 </dependencies>
 ```
 
-There are a few versions available, and the best one to use will depend on the version(s) of Maven you need to support:
 
-  - 1.0.1 &mdash; Supports Maven 2.x only
-  - 1.5   &mdash; Supports both Maven 2.x and Maven 3.x
-  - 2.0.x &mdash; Supports Maven 3.0.x only
-  - 2.1.x &mdash; Supports Maven 3.0.x and 3.1.x
+Maven Compatibility
+===================
+
+- 2.4.x &mdash; Requires Maven 3.3.1 or later
+- 2.1.x/2.2.x &mdash; Support Maven 3.x
+- 2.0.x &mdash; Supports Maven 3.0.x only
+- 1.5.x &mdash; Supports both Maven 2.x and Maven 3.x
+- 1.0.1 &mdash; Supports Maven 2.x only
 
 License
 =======
