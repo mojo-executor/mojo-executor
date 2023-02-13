@@ -32,7 +32,7 @@ jobs:
       with:
         java-version: 11
     - name: Set up Maven
-      uses: stCarolas/setup-maven@v4
+      uses: stCarolas/setup-maven@v4.5
       with:
         maven-version:  ${{ matrix.maven }}
     - name: Build with Maven
