@@ -25,7 +25,7 @@ import org.apache.maven.plugin.BuildPluginManager;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugins.annotations.*;
 import org.apache.maven.project.MavenProject;
-import org.codehaus.plexus.configuration.xml.XmlPlexusConfiguration;
+import org.codehaus.plexus.configuration.PlexusConfiguration;
 import org.codehaus.plexus.logging.Logger;
 import org.slf4j.ILoggerFactory;
 import org.slf4j.LoggerFactory;
@@ -62,7 +62,7 @@ public class MojoExecutorMojo extends AbstractMojo {
      * Plugin configuration to use in the execution.
      */
     @Parameter
-    private XmlPlexusConfiguration configuration;
+    private PlexusConfiguration configuration;
 
     /**
      * The project currently being build.
