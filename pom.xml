@@ -19,7 +19,7 @@
 
   <groupId>org.twdata.maven</groupId>
   <artifactId>mojo-executor-parent</artifactId>
-  <version>2.4.1-SNAPSHOT</version>
+  <version>2.4.1-m2</version>
   <packaging>pom</packaging>
 
   <name>Mojo Executor Parent</name>
@@ -98,7 +98,7 @@
     <connection>scm:git:https://github.com/mojo-executor/mojo-executor.git</connection>
     <developerConnection>scm:git:ssh://git@github.com/mojo-executor/mojo-executor.git</developerConnection>
     <url>https://github.com/mojo-executor/mojo-executor</url>
-    <tag>HEAD</tag>
+    <tag>mojo-executor-parent-2.4.1-m2</tag>
   </scm>
   <issueManagement>
     <system>GitHub</system>
