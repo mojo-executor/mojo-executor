@@ -49,15 +49,15 @@ jobs:
         java-version: 11
         distribution: "temurin"
         cache: 'maven'        
-    # https://github.com/marketplace/actions/maven-setings-action
+    # https://github.com/marketplace/actions/maven-settings-action
     - name: Maven Settings
-      uses: s4u/maven-settings-action@v2
+      uses: s4u/maven-settings-action@v2.8.0
       with:
         sonatypeSnapshots: true
         githubServer: false
         servers: |
             [{
-                "id": "sonatype-nexus-snapshots",
+                "id": "ossrh",
                 "username": "${{ secrets.SONATYPE_USERNAME }}",
                 "password": "${{ secrets.SONATYPE_PASSWORD }}"
             }]
