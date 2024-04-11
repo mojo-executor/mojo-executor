@@ -151,7 +151,7 @@
       <dependency>
         <groupId>org.codehaus.plexus</groupId>
         <artifactId>plexus-utils</artifactId>
-        <version>3.0.24</version><!-- should match version exported from Maven: https://github.com/apache/maven/blob/cab6659f9874fa96462afef40fcf6bc033d58c1c/pom.xml#L52
+        <version>4.0.0</version><!-- should match version exported from Maven: https://github.com/apache/maven/blob/cab6659f9874fa96462afef40fcf6bc033d58c1c/pom.xml#L52
         Using slightly newer (forward-compatible) version to silence warnings from security scanners
          -->
       </dependency>
