@@ -39,7 +39,7 @@ jobs:
     #   uses: mxschmitt/action-tmate@v3
     #   if: ${{ failure() }}
     - name: Codecov
-      uses: codecov/codecov-action@v1
+      uses: codecov/codecov-action@v4
 
   snapshot:
     if: github.repository == 'mojo-executor/mojo-executor' && github.event_name == 'push' && github.ref == 'refs/heads/main'
@@ -67,4 +67,4 @@ jobs:
     - name: Deploy Snapshot
       run: mvn -B -V -Dmaven.deploy.skip=releases org.apache.maven.plugins:maven-source-plugin:jar-no-fork deploy
     - name: Codecov
-      uses: codecov/codecov-action@v1
+      uses: codecov/codecov-action@v4
