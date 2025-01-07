@@ -288,10 +288,14 @@ public class MojoExecutorTest {
                         pluginManager
                 )
         );
+        MojoExecution mojoExecution = new MojoExecution(copyDependenciesMojoDescriptor, "execution");
+        mojoExecution.setConfiguration(configuration(
+                element(name("outputDirectory"), "${project.build.directory}/foo")
+        ));
         verify(pluginManager)
                 .executeMojo(
                         same(session),
-                        argThat(is(equalTo(new MojoExecution(copyDependenciesMojoDescriptor, "execution"))))
+                        argThat(is(equalTo(mojoExecution)))
                 );
     }
 
