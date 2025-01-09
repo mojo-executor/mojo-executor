@@ -125,10 +125,12 @@ public class MojoExecutor {
 
     private static MojoExecution mojoExecution(MojoDescriptor mojoDescriptor, String executionId,
                                                Xpp3Dom configuration) {
+        configuration = Xpp3DomUtils.mergeXpp3Dom(configuration, toXpp3Dom(mojoDescriptor.getMojoConfiguration()));
         if (executionId != null) {
-            return new MojoExecution(mojoDescriptor, executionId);
+            MojoExecution mojoExecution = new MojoExecution(mojoDescriptor, executionId);
+            mojoExecution.setConfiguration(configuration);
+            return mojoExecution;
         } else {
-            configuration = Xpp3DomUtils.mergeXpp3Dom(configuration, toXpp3Dom(mojoDescriptor.getMojoConfiguration()));
             return new MojoExecution(mojoDescriptor, configuration);
         }
     }
