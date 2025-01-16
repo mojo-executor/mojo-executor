@@ -14,4 +14,6 @@
  * limitations under the License.
  */
 File buildLog = new File((String) basedir, "build.log")
-return buildLog.readLines().contains("     [echo] Mojo Executor ran successfully.");
+def text = buildLog.getText()
+text = text.replaceAll("\r\n", "\n")
+return text.contains("     [echo] Mojo Executor ran successfully.");
