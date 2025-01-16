@@ -35,6 +35,7 @@ Cheers,
 News
 ====
 
+-  9 Jan 2025 &mdash; [Mojo Executor 2.4.1](https://github.com/mojo-executor/mojo-executor/releases/tag/mojo-executor-parent-2.4.1) released
 - 10 Mar 2022 &mdash; [Mojo Executor 2.4.0](https://github.com/mojo-executor/mojo-executor/releases/tag/mojo-executor-parent-2.4.0) released
 - 10 Feb 2022 &mdash; Mojo Executor 2.3.3 released with updated dependencies
 -  1 Sep 2021 &mdash; Mojo Executor 2.3.2 released (by Nick Cross) with various bug fixes and minor improvements
